@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+# spring #
+##########
+spring:
+  application:
+    name: velrs-engine
+  profiles:
+    active: devp
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+# mybatis #
+###########
+mybatis:
+  type-aliases-package: com.ysf.velrs.engine.domain
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

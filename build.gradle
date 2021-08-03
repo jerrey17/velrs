@@ -1,0 +1,71 @@
+subprojects {
+	group = 'com.rui.vse'
+
+	apply plugin: 'java'
+	apply plugin: 'maven'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	buildscript {
+		repositories {
+			mavenLocal()
+			maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+			maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+			maven { url "https://repo.spring.io/milestone" }
+			maven { url "https://jitpack.io" }
+			jcenter()
+			mavenCentral()
+		}
+	}
+
+	repositories {
+		mavenLocal()
+		maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+		maven { url "https://repo.spring.io/milestone" }
+		maven { url "https://jitpack.io" }
+		jcenter()
+		mavenCentral()
+	}
+
+	configurations.all {
+		resolutionStrategy.cacheChangingModulesFor 1, 'seconds'
+	}
+
+	task sourcesJar(type: Jar, dependsOn: classes) {
+		classifier = 'sources'
+		from sourceSets.main.allSource
+	}
+
+	artifacts {
+		archives jar
+		archives sourcesJar
+	}
+
+	task cleanBuildDir(type: Delete) {
+		delete "${projectDir}/out"
+	}
+	tasks.clean.dependsOn(cleanBuildDir)
+
+
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+eclipse {
+	classpath {
+		downloadSources = true
+	}
+}
+
+idea {
+	module {
+		downloadSources = true
+	}
+}
+
+configurations.all {
+	resolutionStrategy.cacheChangingModulesFor 1, 'seconds'
+}

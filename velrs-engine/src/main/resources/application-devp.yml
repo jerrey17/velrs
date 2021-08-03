@@ -1,0 +1,40 @@
+logging:
+  level:
+    root: info
+  file:
+    path: /Users/${user.name}/log
+
+# spring #
+##########
+spring:
+  # db #
+  ######
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/velrs?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    hikari:
+      pool-name: velrs_hikari_jdbc
+      minimum-idle: 1
+      maximum-pool-size: 20
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 10000
+      connection-test-query: select 1
+  # redis #
+  #########
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 10000
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 0
+        max-wait: 5000
+        time-between-eviction-runs: 900s
