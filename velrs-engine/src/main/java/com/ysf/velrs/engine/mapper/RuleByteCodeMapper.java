@@ -24,4 +24,10 @@ public interface RuleByteCodeMapper {
 
     RuleByteCode selectOne(@Param("domain") RuleByteCode domain);
 
+    /**
+     * 验证db是否正常
+     * @return
+     */
+    String selectX();
+
 }

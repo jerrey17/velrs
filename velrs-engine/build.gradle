@@ -18,11 +18,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
-    compile('org.apache.commons:commons-pool2')
+    implementation 'org.apache.commons:commons-pool2'
+    implementation "org.springframework.boot:spring-boot-configuration-processor"
 
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
     runtime "mysql:mysql-connector-java:$mysqlVersion"
     implementation "org.mybatis:mybatis-typehandlers-jsr310:1.0.1"
+
+    compile("org.codehaus.groovy:groovy-all:2.4.15")
 
     compile("com.alibaba:fastjson:$fastjsonVersion")
 

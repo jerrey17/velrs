@@ -36,4 +36,9 @@ public interface RuleByteCodeService {
      */
     RuleByteCode selectOne(RuleByteCode domain);
 
+    /**
+     * 验证db
+     */
+    void checkDbIsOK();
+
 }

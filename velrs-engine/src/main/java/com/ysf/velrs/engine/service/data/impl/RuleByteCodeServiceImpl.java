@@ -3,13 +3,13 @@ package com.ysf.velrs.engine.service.data.impl;
 import com.ysf.velrs.engine.domain.RuleByteCode;
 import com.ysf.velrs.engine.mapper.RuleByteCodeMapper;
 import com.ysf.velrs.engine.service.data.RuleByteCodeService;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 规则字节码表 Service Impl
@@ -63,6 +63,11 @@ public class RuleByteCodeServiceImpl implements RuleByteCodeService {
     @Override
     public RuleByteCode selectOne(RuleByteCode domain) {
         return mapper.selectOne(domain);
+    }
+
+    @Override
+    public void checkDbIsOK() {
+        mapper.selectX();
     }
 
 }

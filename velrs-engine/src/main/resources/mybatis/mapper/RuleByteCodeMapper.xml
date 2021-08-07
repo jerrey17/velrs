@@ -156,4 +156,8 @@
         LIMIT 1
     </select>
 
+    <select id="selectX" resultType="java.lang.String">
+        SELECT 'X'
+    </select>
+
 </mapper>
