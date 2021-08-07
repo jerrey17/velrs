@@ -26,6 +26,7 @@ dependencies {
     implementation "org.mybatis:mybatis-typehandlers-jsr310:1.0.1"
 
     compile("org.codehaus.groovy:groovy-all:2.4.15")
+    compile("org.apache.commons:commons-lang3:3.8.1")
 
     compile("com.alibaba:fastjson:$fastjsonVersion")
 
