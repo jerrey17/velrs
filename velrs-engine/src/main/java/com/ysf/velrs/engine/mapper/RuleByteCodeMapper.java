@@ -1,10 +1,10 @@
 package com.ysf.velrs.engine.mapper;
 
 import com.ysf.velrs.engine.domain.RuleByteCode;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 规则字节码表 Mapper接口
@@ -26,8 +26,17 @@ public interface RuleByteCodeMapper {
 
     /**
      * 验证db是否正常
+     *
      * @return
      */
-    String selectX();
+    String selectOK();
+
+    /**
+     * ruleId获取RuleByteCode对象
+     *
+     * @param ruleId
+     * @return
+     */
+    RuleByteCode selectByRuleId(@Param("ruleId") String ruleId);
 
 }

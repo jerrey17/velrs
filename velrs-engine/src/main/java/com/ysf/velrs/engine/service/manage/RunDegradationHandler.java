@@ -48,7 +48,7 @@ public class RunDegradationHandler {
                 break;
             case DB:
                 runGovernment = new RunPersistByDB(ruleGovernmentConfig, () -> {
-                    stringRedisTemplate.opsForValue().get("X");
+                    stringRedisTemplate.opsForValue().get("R");
                     return true;
                 });
                 break;

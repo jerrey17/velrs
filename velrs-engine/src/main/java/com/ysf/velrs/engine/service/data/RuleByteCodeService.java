@@ -41,4 +41,12 @@ public interface RuleByteCodeService {
      */
     void checkDbIsOK();
 
+    /**
+     * 唯一键获取规则
+     *
+     * @param ruleId
+     * @return
+     */
+    RuleByteCode getByRuleId(String ruleId);
+
 }

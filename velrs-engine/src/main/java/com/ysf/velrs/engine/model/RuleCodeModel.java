@@ -1,12 +1,18 @@
 package com.ysf.velrs.engine.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author rui
  * @Date 2021-08-07 21:11
  **/
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RuleCodeModel {
 
     /**

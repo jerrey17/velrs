@@ -156,8 +156,15 @@
         LIMIT 1
     </select>
 
-    <select id="selectX" resultType="java.lang.String">
-        SELECT 'X'
+    <select id="selectOK" resultType="java.lang.String">
+        SELECT 1
+    </select>
+
+    <select id="selectByRuleId" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumnList"/>
+        FROM `t_rule_byte_code`
+        where rule_id = #{ruleId}
     </select>
 
 </mapper>

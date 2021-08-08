@@ -67,7 +67,12 @@ public class RuleByteCodeServiceImpl implements RuleByteCodeService {
 
     @Override
     public void checkDbIsOK() {
-        mapper.selectX();
+        mapper.selectOK();
+    }
+
+    @Override
+    public RuleByteCode getByRuleId(String ruleId) {
+        return mapper.selectByRuleId(ruleId);
     }
 
 }
