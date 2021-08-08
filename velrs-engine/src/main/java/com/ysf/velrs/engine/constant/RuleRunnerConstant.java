@@ -19,10 +19,10 @@ public interface RuleRunnerConstant {
     //规则bean或规则类的名称的前缀
     String NAME_PREFIX = "R_";
     String VERSION_TAG = "_V";
-    String TEST_TAG = "TEST_";
+    String TEST_TAG = "T_";
 
-    //runner context name
-    String RUNNER_CONTEXT_BEAN_NAME = "context";
+    //rule context name
+    String RUN_CONTEXT_BEAN_NAME = "context";
 
     /****** redis key ******/
     String REDIS_HASH_INIT_VAR = "rule.runner.hash.init.var";

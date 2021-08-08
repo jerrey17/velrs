@@ -1,4 +1,4 @@
-package com.ysf.velrs.engine.service.runner;
+package com.ysf.velrs.engine.service.ruleload;
 
 import com.ysf.velrs.engine.constant.RuleRunnerConstant;
 import com.ysf.velrs.engine.model.RuleCodeModel;
@@ -48,7 +48,7 @@ public class RulerBeanLoader implements InitializingBean {
         Class rClass = groovyClassLoader.parseClass(javaCode);
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(rClass);
         // TODO configurableApplicationContext.getBean(RunnerContext.class) 可能存在多个实例？
-        beanDefinitionBuilder.addPropertyValue(RuleRunnerConstant.RUNNER_CONTEXT_BEAN_NAME, configurableApplicationContext.getBean(RunnerContext.class));
+        beanDefinitionBuilder.addPropertyValue(RuleRunnerConstant.RUN_CONTEXT_BEAN_NAME, configurableApplicationContext.getBean(RunnerContext.class));
         //注册bean实例
         beanFactory.registerBeanDefinition(ruleCodeModel.getBeanName(), beanDefinitionBuilder.getBeanDefinition());
         //注册到注册表

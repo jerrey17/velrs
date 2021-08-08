@@ -1,4 +1,4 @@
-package com.ysf.velrs.engine.service.runner;
+package com.ysf.velrs.engine.service.ruleload;
 
 import com.ysf.velrs.engine.model.RuleCodeModel;
 import com.ysf.velrs.engine.model.RuleRegistryModel;
@@ -57,6 +57,7 @@ public class RuleRegistry {
 
     /**
      * 是否注册了一个空对象
+     * 注册空对象是为了防止接口穿透问题，避免不存在的恶意参数强刷接口，导致底层缓存或db崩溃。
      *
      * @param beanName
      * @return
