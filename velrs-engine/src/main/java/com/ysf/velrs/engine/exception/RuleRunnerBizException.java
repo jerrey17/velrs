@@ -1,9 +1,12 @@
 package com.ysf.velrs.engine.exception;
 
+import lombok.Getter;
+
 /**
  * @Author rui
  * @Date 2021-07-29 10:33
  **/
+@Getter
 public class RuleRunnerBizException extends RuntimeException {
 
     private String identityId;
@@ -26,7 +29,4 @@ public class RuleRunnerBizException extends RuntimeException {
         this.identityId = identityId;
     }
 
-    public String getIdentityId() {
-        return identityId;
-    }
 }
