@@ -1,6 +1,8 @@
 package com.ysf.velrs.engine.model;
 
+import com.ysf.velrs.engine.exception.RuleRunnerBizException;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -36,4 +38,16 @@ public class RunReqModel implements Serializable {
      * fact规则参数
      */
     private Map<String, String> fact;
+
+    /**
+     * 简单参数验证
+     */
+    public boolean simpleCheck() {
+        if (StringUtils.isEmpty(this.getRuleId())
+                || StringUtils.isEmpty(this.getProjectId())
+                || this.getFact() == null) {
+            throw new RuleRunnerBizException(this.getIdentityId(), "参数异常");
+        }
+        return true;
+    }
 }

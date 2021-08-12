@@ -6,19 +6,20 @@ import java.io.Serializable;
 
 /**
  * 规则运行响应参数
+ *
  * @Author rui
  * @Date 2021-07-29 10:30
  **/
 @Data
 public class RunRespModel<T> implements Serializable {
 
-    // 响应状态：0：失败（默认）；1：成功
+    // 请求响应状态：0：失败（默认）；1：成功
     private int status = 0;
 
-    // 是否通过：0:不通过（默认）；1：通过
-    private int pass = 0;
+    // 规则结果：false:不通过（默认）；true：通过
+    private boolean pass = false;
 
-    // 响应数据
+    // 规则响应数据
     private T data;
 
     // 编码
@@ -49,7 +50,7 @@ public class RunRespModel<T> implements Serializable {
      * @param <T>  响应数据类型
      * @return ResponseModel
      */
-    public static <T> RunRespModel responseSuccess(T data, int pass) {
+    public static <T> RunRespModel responseSuccess(T data, boolean pass) {
         RunRespModel runRespModel = responseSuccess(data);
         runRespModel.setPass(pass);
         return runRespModel;
