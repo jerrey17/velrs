@@ -30,4 +30,9 @@ public class RuleGovernmentConfig {
      * 最大心跳次数
      */
     private int maxBeatTimes = 6;
+
+    /**
+     * gc回收步长（1-60min），默认5，单位：分钟
+     */
+    private int gcStep = 5;
 }
