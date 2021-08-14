@@ -1,5 +1,7 @@
 package com.ysf.velrs.engine.service.manage;
 
+import com.ysf.velrs.engine.service.ruleload.RuleRegistry;
+import com.ysf.velrs.engine.service.ruleload.RuleVersionUpgrade;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +19,10 @@ public class RunGovernmentSchedule {
 
     @Autowired
     private RunDegradationHandler runDegradationHandler;
+    @Autowired
+    private RuleRegistry ruleRegistry;
+    @Autowired
+    private RuleVersionUpgrade ruleVersionUpgrade;
 
     /**
      * 心跳监控
@@ -33,6 +39,6 @@ public class RunGovernmentSchedule {
     @Scheduled(cron = "0 */10 * * * ?")
     public void upgrade() {
         log.warn(">>>[定时调度]规则升级检查...");
-        // todo
+        ruleRegistry.getRuleRegistries().forEach((k, v) -> ruleVersionUpgrade.upgrade(v));
     }
 }
