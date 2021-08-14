@@ -14,6 +14,7 @@ public class MainTest {
                 "import com.alibaba.fastjson.JSON;\n" +
                 "import com.ysf.velrs.engine.model.ResultInfo;\n" +
                 "import com.ysf.velrs.engine.service.BaseRuleWorker;\n" +
+                "import com.ysf.velrs.engine.service.exp.BooleanExp;\n" +
                 "\n" +
                 "import java.util.Map;\n" +
                 "\n" +
@@ -25,8 +26,11 @@ public class MainTest {
                 "\n" +
                 "    @Override\n" +
                 "    public ResultInfo run(Map<String, String> vars) throws Exception {\n" +
+                "\n" +
+                "        BooleanExp booleanExp = new BooleanExp(vars.get(\"sex\"));\n" +
+                "\n" +
                 "        ResultInfo resultInfo = new ResultInfo();\n" +
-                "        resultInfo.setPass(true);\n" +
+                "        resultInfo.setPass(booleanExp.isTrue());\n" +
                 "        resultInfo.setResultMsg(JSON.toJSONString(vars));\n" +
                 "        return resultInfo;\n" +
                 "    }\n" +
