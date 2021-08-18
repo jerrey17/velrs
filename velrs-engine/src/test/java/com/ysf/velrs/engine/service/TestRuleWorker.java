@@ -21,7 +21,7 @@ public class TestRuleWorker implements BaseRuleWorker {
         BooleanExp booleanExp0_0 = new BooleanExp(vars.get("sex"));
         StringExp stringExp0_1 = new StringExp(vars.get("??"));
 
-        boolean resultByExp0 = booleanExp0_0.isTrue() || stringExp0_1.contain("123");
+        boolean resultByExp0 = booleanExp0_0.isTrue() || stringExp0_1.contain(vars.get("sex"));
 
         // 第二组
         StringExp stringExp1_0 = new StringExp(vars.get("??"));
