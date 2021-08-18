@@ -1,0 +1,134 @@
+package com.ysf.velrs.engine.service.exp;
+
+import com.ysf.velrs.engine.exception.RuleExpiredException;
+
+import java.util.Objects;
+
+/**
+ * 字符串表达式对象
+ *
+ * @Author rui
+ * @Date 2021-08-14 15:16
+ **/
+public class StringExp {
+
+    private String data;
+
+    public StringExp(String data) {
+        if (Objects.isNull(data)) {
+            throw new RuleExpiredException("StringExp参数不能为空");
+        }
+        this.data = data;
+    }
+
+    /**
+     * 为空
+     *
+     * @return
+     */
+    public boolean isNull() {
+        return Objects.isNull(data);
+    }
+
+    /**
+     * 不为空
+     *
+     * @return
+     */
+    public boolean notNull() {
+        return !this.isNull();
+    }
+
+    /**
+     * 是否相等
+     *
+     * @param target
+     * @return
+     */
+    public boolean equal(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#equal方法条件不能为空");
+        }
+        return Objects.equals(data, target);
+    }
+
+    /**
+     * 不相等
+     *
+     * @param target
+     * @return
+     */
+    public boolean notEqual(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#notEqual方法条件不能为空");
+        }
+        return !Objects.equals(data, target);
+    }
+
+    /**
+     * 是否以目标字符串开头
+     *
+     * @param target
+     * @return
+     */
+    public boolean startWith(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#startWith方法条件不能为空");
+        }
+        return this.data.startsWith(target);
+    }
+
+    /**
+     * 是否以目标字符串结尾
+     *
+     * @param target
+     * @return
+     */
+    public boolean endWith(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#endWith方法条件不能为空");
+        }
+        return this.data.endsWith(target);
+    }
+
+    /**
+     * 正则匹配
+     *
+     * @param target
+     * @return
+     */
+    public boolean matches(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#matches方法条件不能为空");
+        }
+        return this.data.matches(target);
+    }
+
+    /**
+     * 包含
+     *
+     * @param target
+     * @return
+     */
+    public boolean contain(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#contain方法条件不能为空");
+        }
+        return this.data.contains(target);
+    }
+
+    /**
+     * 不包含
+     *
+     * @param target
+     * @return
+     */
+    public boolean notContain(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("String#notContain方法条件不能为空");
+        }
+        return !this.data.contains(target);
+    }
+
+
+}

@@ -7,6 +7,8 @@ import com.ysf.velrs.engine.service.exp.*;
 import java.util.Map;
 
 /**
+ * 单元测试类
+ *
  * @Author rui
  * @Date 2021-08-12 18:17
  **/
@@ -15,16 +17,23 @@ public class TestRuleWorker implements BaseRuleWorker {
     @Override
     public ResultInfo run(Map<String, String> vars) throws Exception {
 
-        BooleanExp booleanExp = new BooleanExp(vars.get("sex"));
+        // 第一组
+        BooleanExp booleanExp0_0 = new BooleanExp(vars.get("sex"));
+        StringExp stringExp0_1 = new StringExp(vars.get("??"));
 
-        boolean result1 = booleanExp.isTrue();
+        boolean resultByExp0 = booleanExp0_0.isTrue() || stringExp0_1.contain("123");
 
-        boolean result = result1;
+        // 第二组
+        StringExp stringExp1_0 = new StringExp(vars.get("??"));
 
+        boolean resultByExp1 = stringExp1_0.startWith("SB");
 
+        // result
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setPass(result);
+        resultInfo.setPass(resultByExp0 && resultByExp1);
         resultInfo.setResultMsg(JSON.toJSONString(vars));
         return resultInfo;
     }
+
+
 }
