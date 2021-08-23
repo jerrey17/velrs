@@ -1,12 +1,12 @@
 package com.ysf.velrs.engine;
 
+import com.ysf.velrs.engine.controller.message.CompileReqMessage;
 import com.ysf.velrs.engine.model.ConditionModel;
-import com.ysf.velrs.engine.model.ConditionModel.ConditionsBean.SourceBean;
-import com.ysf.velrs.engine.service.compile.CompileExpAbstract;
-import com.ysf.velrs.engine.service.compile.CompileStringExp;
+import com.ysf.velrs.engine.model.ConditionModel.ExpBean.SourceBean;
+import com.ysf.velrs.engine.service.compile.CompileHandler;
+import org.assertj.core.util.Lists;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 /**
@@ -25,16 +25,16 @@ public class MainTest {
         sourceBean.setMethod("matches");
         sourceBean.setParamSize(2);
 
-        List<ConditionModel.ConditionsBean.TargetBean> targetBeans = new ArrayList<>();
+        List<ConditionModel.ExpBean.TargetBean> targetBeans = new ArrayList<>();
 
-        ConditionModel.ConditionsBean.TargetBean targetBean = new ConditionModel.ConditionsBean.TargetBean();
+        ConditionModel.ExpBean.TargetBean targetBean = new ConditionModel.ExpBean.TargetBean();
         targetBean.setValueType("value");
         targetBean.setValue("123123");
         targetBean.setCode("");
         targetBean.setName("");
         targetBean.setClassType("");
 
-        ConditionModel.ConditionsBean.TargetBean targetBean1 = new ConditionModel.ConditionsBean.TargetBean();
+        ConditionModel.ExpBean.TargetBean targetBean1 = new ConditionModel.ExpBean.TargetBean();
         targetBean1.setValueType("prop");
         targetBean1.setValue("");
         targetBean1.setCode("bankCard");
@@ -44,16 +44,30 @@ public class MainTest {
         targetBeans.add(targetBean1);
 
 
-        ConditionModel.ConditionsBean condition = new ConditionModel.ConditionsBean();
+        ConditionModel.ExpBean condition = new ConditionModel.ExpBean();
         condition.setSource(sourceBean);
         condition.setTarget(targetBeans);
         condition.setLogicalExp("||");
 
-        CompileStringExp stringExp = new CompileStringExp(condition, 0, 0);
+//        CompileString stringExp = new CompileString(condition, 0, 0);
+//
+//        System.out.println(stringExp.getExpObj());
+//        System.out.println(stringExp.getLogic());
+//        System.out.println(stringExp.getExp());
 
-        System.out.println(stringExp.getExpObj());
-        System.out.println(stringExp.getLogic());
-        System.out.println(stringExp.getExp());
+        ConditionModel conditionModel = new ConditionModel();
+        conditionModel.setExps(Lists.newArrayList(condition));
+        conditionModel.setLogicalExp("||");
+
+
+        List<ConditionModel> models = new ArrayList<>();
+        models.add(conditionModel);
+        CompileReqMessage message = new CompileReqMessage();
+        message.setRule(models);
+
+        CompileHandler compileHandler = new CompileHandler();
+
+        compileHandler.execute(message);
 
 //        String code = "package com.ysf.velrs.engine;\n" +
 //                "\n" +

@@ -13,15 +13,12 @@ import java.util.List;
 @Data
 public class ConditionModel {
 
-    private List<ConditionsBean> conditions;
+    private List<ExpBean> exps;
+
+    private String logicalExp;
 
     @Data
-    public static class ConditionsBean {
-        /**
-         * source : {"valueType":"prop","code":"invoiceNo","name":"发票编码","classType":"StringExp","method":"eq","paramSize":1}
-         * target : [{"valueType":"prop","value":"abcdefg","code":"thirdAmount","name":"第三方金额","classType":"AmountExp"}]
-         * logicalExp :
-         */
+    public static class ExpBean {
 
         /**
          * 表达式比对左边属性值

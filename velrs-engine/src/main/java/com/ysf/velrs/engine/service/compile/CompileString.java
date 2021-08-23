@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 2021-08-18 16:38
  **/
 @Slf4j
-public class CompileStringExp extends CompileExpAbstract implements CompileExpInterface {
+public class CompileString extends CompileExpAbstract implements CompileInterface {
 
-    public CompileStringExp(ConditionModel.ConditionsBean condition, int ruleIndex, int conditionIndex) {
+    public CompileString(ConditionModel.ExpBean condition, int ruleIndex, int conditionIndex) {
         super(condition, ruleIndex, conditionIndex, StringExp.class);
     }
 

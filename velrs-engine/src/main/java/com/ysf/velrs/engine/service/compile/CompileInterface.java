@@ -1,10 +1,12 @@
 package com.ysf.velrs.engine.service.compile;
 
 /**
+ * 表达式编译
+ *
  * @Author rui
  * @Date 2021-08-18 16:28
  **/
-public interface CompileExpInterface {
+public interface CompileInterface {
 
     /**
      * 获取表达式对象

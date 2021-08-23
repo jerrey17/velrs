@@ -9,29 +9,31 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 表达式编译器
+ *
  * @Author rui
  * @Date 2021-08-18 17:47
  **/
 @Slf4j
-public abstract class CompileExpAbstract<T extends Class> implements CompileExpInterface {
+public abstract class CompileExpAbstract<T extends Class> implements CompileInterface {
 
-    protected ConditionModel.ConditionsBean condition;
-    protected int ruleIndex;
+    protected ConditionModel.ExpBean exp;
     protected int conditionIndex;
+    protected int expIndex;
     private String name; // 编译属性的名称
     private T clazz;
 
-    public CompileExpAbstract(ConditionModel.ConditionsBean condition, int ruleIndex, int conditionIndex, T clazz) {
-        this.condition = condition;
-        this.ruleIndex = ruleIndex;
+    public CompileExpAbstract(ConditionModel.ExpBean exp, int conditionIndex, int expIndex, T clazz) {
+        this.exp = exp;
         this.conditionIndex = conditionIndex;
+        this.expIndex = expIndex;
         this.clazz = clazz;
         this.name = clazz.getSimpleName().toLowerCase();
     }
 
     @Override
     public String getExpObj() {
-        ConditionModel.ConditionsBean.SourceBean sourceBean = condition.getSource();
+        ConditionModel.ExpBean.SourceBean sourceBean = exp.getSource();
 
         if (!Objects.equals(clazz.getSimpleName(), sourceBean.getClassType())) {
             throw new CompileException("Source ClassType Not Found");
@@ -41,9 +43,9 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileExpI
         sb.append(sourceBean.getClassType())
                 .append(" ")
                 .append(name)
-                .append(ruleIndex)
-                .append("_")
                 .append(conditionIndex)
+                .append("_")
+                .append(expIndex)
                 .append(" = new ").append(clazz.getSimpleName()).append("(vars.get(\"")
                 .append(sourceBean.getCode())
                 .append("\"));\n");
@@ -54,30 +56,30 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileExpI
 
     @Override
     public String getLogic() {
-        return Objects.nonNull(condition.getLogicalExp()) ? (" " + condition.getLogicalExp() + " ") : "";
+        return Objects.nonNull(exp.getLogicalExp()) ? (" " + exp.getLogicalExp() + " ") : "";
     }
 
     @Override
     public String getExp() {
-        ConditionModel.ConditionsBean.SourceBean sourceBean = condition.getSource();
+        ConditionModel.ExpBean.SourceBean sourceBean = exp.getSource();
 
         if (!Arrays.stream(clazz.getMethods()).anyMatch(method -> Objects.equals(method.getName(), sourceBean.getMethod()))) {
             throw new CompileException("Source Method Not Found");
         }
 
-        List<ConditionModel.ConditionsBean.TargetBean> targetBeans = condition.getTarget();
+        List<ConditionModel.ExpBean.TargetBean> targetBeans = exp.getTarget();
         StringBuffer sb = new StringBuffer();
         sb.append(name)
-                .append(ruleIndex)
-                .append("_")
                 .append(conditionIndex)
+                .append("_")
+                .append(expIndex)
                 .append(".")
                 .append(sourceBean.getMethod())
                 .append("(");
         if (sourceBean.getParamSize() > 0) {
             // 有参数
             for (int i = 0; i < targetBeans.size(); i++) {
-                ConditionModel.ConditionsBean.TargetBean targetBean = targetBeans.get(i);
+                ConditionModel.ExpBean.TargetBean targetBean = targetBeans.get(i);
 
                 if (Objects.equals(targetBean.getValueType(), "value")) {
                     // 值 stringExp0_1.contain("123"); =》 "123"
