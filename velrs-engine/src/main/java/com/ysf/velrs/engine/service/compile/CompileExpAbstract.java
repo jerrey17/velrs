@@ -42,10 +42,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         StringBuffer sb = new StringBuffer();
         sb.append(sourceBean.getClassType())
                 .append(" ")
-                .append(name)
-                .append(conditionIndex)
-                .append("_")
-                .append(expIndex)
+                .append(this.getName())
                 .append(" = new ").append(clazz.getSimpleName()).append("(vars.get(\"")
                 .append(sourceBean.getCode())
                 .append("\"));\n");
@@ -56,7 +53,14 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
 
     @Override
     public String getLogic() {
-        return Objects.nonNull(exp.getLogicalExp()) ? (" " + exp.getLogicalExp() + " ") : "";
+        if (expIndex == 0) {
+            return ""; // 第一个条件没有逻辑拼接
+        } else {
+            if (Objects.isNull(exp.getLogicalExp())) {
+                throw new CompileException("LogicExp Not Found");
+            }
+            return " " + exp.getLogicalExp() + " ";
+        }
     }
 
     @Override
@@ -69,10 +73,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
 
         List<ConditionModel.ExpBean.TargetBean> targetBeans = exp.getTarget();
         StringBuffer sb = new StringBuffer();
-        sb.append(name)
-                .append(conditionIndex)
-                .append("_")
-                .append(expIndex)
+        sb.append(this.getName())
                 .append(".")
                 .append(sourceBean.getMethod())
                 .append("(");
@@ -103,4 +104,10 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         log.info(">> exp:{}", exp);
         return exp;
     }
+
+    @Override
+    public String getName() {
+        return name + conditionIndex + "_" + expIndex;
+    }
+
 }

@@ -29,4 +29,11 @@ public interface CompileInterface {
      */
     String getExp();
 
+    /**
+     * 获取变量名称
+     *
+     * @return
+     */
+    String getName();
+
 }

@@ -18,5 +18,9 @@ public class CompileException extends RuntimeException {
     public void setIdentityId(String identityId) {
         this.identityId = identityId;
     }
+
+    public CompileException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
 

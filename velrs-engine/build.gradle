@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
     implementation 'org.apache.commons:commons-pool2'
     implementation "org.springframework.boot:spring-boot-configuration-processor"
+    implementation "org.springframework.boot:spring-boot-starter-freemarker"
 
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
     runtime "mysql:mysql-connector-java:$mysqlVersion"

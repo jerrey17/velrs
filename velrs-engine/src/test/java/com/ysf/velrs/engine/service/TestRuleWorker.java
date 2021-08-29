@@ -1,39 +1,29 @@
 package com.ysf.velrs.engine.service;
 
-import com.alibaba.fastjson.JSON;
 import com.ysf.velrs.engine.model.ResultInfo;
-import com.ysf.velrs.engine.service.exp.*;
+import com.ysf.velrs.engine.service.exp.StringExp;
 
 import java.util.Map;
 
 /**
- * 单元测试类
+ * 可执行规则
  *
- * @Author rui
- * @Date 2021-08-12 18:17
+ * @Author 张三
+ * @Date 1, 630, 222, 777, 817
  **/
 public class TestRuleWorker implements BaseRuleWorker {
 
+
     @Override
     public ResultInfo run(Map<String, String> vars) throws Exception {
-
-        // 第一组
-        BooleanExp booleanExp0_0 = new BooleanExp(vars.get("sex"));
-        StringExp stringExp0_1 = new StringExp(vars.get("??"));
-
-        boolean resultByExp0 = booleanExp0_0.isTrue() || stringExp0_1.contain(vars.get("sex"));
-
-        // 第二组
-        StringExp stringExp1_0 = new StringExp(vars.get("??"));
-
-        boolean resultByExp1 = stringExp1_0.startWith("SB");
-
-        // result
+        StringExp stringexp0_0 = new StringExp(vars.get("phoneNo"));
+        StringExp stringexp0_1 = new StringExp(vars.get("phoneNo"));
+        boolean result0 = stringexp0_0.matches(vars.get("myPhone")) && stringexp0_1.endWith("6492");
+        StringExp stringexp1_0 = new StringExp(vars.get("phoneNo"));
+        StringExp stringexp1_1 = new StringExp(vars.get("phoneNo"));
+        boolean result1 = stringexp1_0.contain(vars.get("myPhone")) && stringexp1_1.startWith("158");
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setPass(resultByExp0 && resultByExp1);
-        resultInfo.setResultMsg(JSON.toJSONString(vars));
+        resultInfo.setPass(result0 || result1);
         return resultInfo;
     }
-
-
 }
