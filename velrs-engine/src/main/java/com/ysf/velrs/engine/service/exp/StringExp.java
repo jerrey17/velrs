@@ -47,7 +47,7 @@ public class StringExp {
      */
     public boolean equal(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#equal方法条件不能为空");
+            throw new RuleExpiredException("StringExp#equal方法条件不能为空");
         }
         return Objects.equals(data, target);
     }
@@ -60,7 +60,7 @@ public class StringExp {
      */
     public boolean notEqual(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#notEqual方法条件不能为空");
+            throw new RuleExpiredException("StringExp#notEqual方法条件不能为空");
         }
         return !Objects.equals(data, target);
     }
@@ -73,7 +73,7 @@ public class StringExp {
      */
     public boolean startWith(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#startWith方法条件不能为空");
+            throw new RuleExpiredException("StringExp#startWith方法条件不能为空");
         }
         return this.data.startsWith(target);
     }
@@ -86,7 +86,7 @@ public class StringExp {
      */
     public boolean endWith(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#endWith方法条件不能为空");
+            throw new RuleExpiredException("StringExp#endWith方法条件不能为空");
         }
         return this.data.endsWith(target);
     }
@@ -99,7 +99,7 @@ public class StringExp {
      */
     public boolean matches(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#matches方法条件不能为空");
+            throw new RuleExpiredException("StringExp#matches方法条件不能为空");
         }
         return this.data.matches(target);
     }
@@ -112,7 +112,7 @@ public class StringExp {
      */
     public boolean contain(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#contain方法条件不能为空");
+            throw new RuleExpiredException("StringExp#contain方法条件不能为空");
         }
         return this.data.contains(target);
     }
@@ -125,7 +125,7 @@ public class StringExp {
      */
     public boolean notContain(String target) {
         if (Objects.isNull(target)) {
-            throw new RuleExpiredException("String#notContain方法条件不能为空");
+            throw new RuleExpiredException("StringExp#notContain方法条件不能为空");
         }
         return !this.data.contains(target);
     }
