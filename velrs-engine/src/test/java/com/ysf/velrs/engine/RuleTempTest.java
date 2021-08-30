@@ -63,7 +63,6 @@ public class RuleTempTest {
     public void compile() {
 
         ConditionModel.ExpBean.SourceBean sourceBean = new ConditionModel.ExpBean.SourceBean();
-        sourceBean.setValueType("123");
         sourceBean.setCode("cardId");
         sourceBean.setName("卡id");
         sourceBean.setClassType("StringExp");
@@ -77,14 +76,12 @@ public class RuleTempTest {
         targetBean.setValue("123123");
         targetBean.setCode("");
         targetBean.setName("");
-        targetBean.setClassType("");
 
         ConditionModel.ExpBean.TargetBean targetBean1 = new ConditionModel.ExpBean.TargetBean();
         targetBean1.setValueType("prop");
         targetBean1.setValue("");
         targetBean1.setCode("bankCard");
         targetBean1.setName("银行卡");
-        targetBean1.setClassType("");
         targetBeans.add(targetBean);
         targetBeans.add(targetBean1);
 

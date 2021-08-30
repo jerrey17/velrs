@@ -1,5 +1,7 @@
 package com.ysf.velrs.engine.service.compile;
 
+import java.util.Map;
+
 /**
  * 表达式编译
  *
@@ -35,5 +37,13 @@ public interface CompileInterface {
      * @return
      */
     String getName();
+
+    /**
+     * 获取请求参数
+     *
+     * @return
+     */
+    Map<String, String> getParam();
+
 
 }

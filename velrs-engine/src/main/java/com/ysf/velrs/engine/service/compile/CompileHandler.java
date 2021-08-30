@@ -1,5 +1,6 @@
 package com.ysf.velrs.engine.service.compile;
 
+import com.ysf.velrs.engine.constant.RuleRunnerConstant;
 import com.ysf.velrs.engine.controller.message.CompileReqMessage;
 import com.ysf.velrs.engine.controller.message.CompileRespMessage;
 import com.ysf.velrs.engine.enums.ExpEnum;
@@ -7,6 +8,7 @@ import com.ysf.velrs.engine.exception.CompileException;
 import com.ysf.velrs.engine.model.ConditionModel;
 import com.ysf.velrs.engine.service.exp.BooleanExp;
 import com.ysf.velrs.engine.service.exp.StringExp;
+import com.ysf.velrs.engine.utils.JsonUtil;
 import com.ysf.velrs.engine.utils.RuleRunnerUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -29,6 +31,16 @@ import java.util.*;
 @Component
 public class CompileHandler {
 
+    private static final String K_CLASS_NAME = "className";
+    private static final String K_COMPILE_TIME = "compileTime";
+    private static final String K_RULE_CONTENT = "ruleContent";
+    private static final String K_COMPILER = "compiler";
+    private static final String K_REQUEST_PARAM = "requestParam";
+    private static final String K_REMARK = "remark";
+    private static final String K_RULE_ID = "ruleId";
+    private static final String K_PROJECT_ID = "projectId";
+    private static final String K_FACT = "fact";
+
     @Autowired
     Configuration config;
 
@@ -44,22 +56,24 @@ public class CompileHandler {
         String javaClassName = RuleRunnerUtil.getClassName(message.getRuleId(), compileTime);
         log.info(">>> 编译规则类:{};编译时间:{}", javaClassName, compileTime);
 
+        Map<String, String> ruleContent = this.getRuleContent(message);
+
         final Map<String, Object> compileMap = new HashMap();
-        compileMap.put("className", javaClassName);
-        compileMap.put("compileTime", compileTime);
-        compileMap.put("ruleContent", this.getRuleContent(message.getRule()));
-        compileMap.put("compiler", message.getOperator());
-        compileMap.put("remark", "可执行规则");
+        compileMap.put(K_CLASS_NAME, javaClassName);
+        compileMap.put(K_COMPILE_TIME, compileTime);
+        compileMap.put(K_RULE_CONTENT, ruleContent.get(K_RULE_CONTENT));
+        compileMap.put(K_COMPILER, message.getOperator());
+        compileMap.put(K_REMARK, "可执行规则");
 
         try {
-            Template template = config.getTemplate("rule_template.ftl");
+            Template template = config.getTemplate(RuleRunnerConstant.RULE_TEMPLATE);
             String clazz = FreeMarkerTemplateUtils.processTemplateIntoString(template, compileMap);
             log.info(">>> 编译后的类:{}", clazz);
 
             CompileRespMessage response = new CompileRespMessage();
             response.setRuleId(message.getRuleId());
             response.setRuleByteCode(new String(Base64.getEncoder().encode(clazz.getBytes())));
-            response.setRequestParam(""); // todo
+            response.setRequestParam(ruleContent.get(K_REQUEST_PARAM));
             response.setCompileTime(compileTime);
             return response;
         } catch (IOException e) {
@@ -74,10 +88,11 @@ public class CompileHandler {
     /**
      * 获取规则内容
      *
-     * @param conditionModels
+     * @param message
      * @return
      */
-    private String getRuleContent(List<ConditionModel> conditionModels) {
+    private Map<String, String> getRuleContent(CompileReqMessage message) {
+        List<ConditionModel> conditionModels = message.getRule();
         final List<CompileInterface> conditions = new ArrayList<>(conditionModels.size());
 
         // 循环编译
@@ -96,21 +111,35 @@ public class CompileHandler {
         // 组装结果
         StringBuffer content = new StringBuffer();
         StringBuffer resultExp = new StringBuffer();
+        Map<String, String> fact = new HashMap<>();
         for (int i = 0; i < conditions.size(); i++) {
             CompileInterface condition = conditions.get(i);
 
             content.append(condition.getExpObj())   // 条件初始化对象
-//                    .append(condition.getLogic())   // 逻辑表达式
                     .append(condition.getExp());    // 条件表达式
             resultExp.append(condition.getLogic())  // 逻辑表达式
                     .append(condition.getName());   // 条件对象名称
-
+            // fact参数条件构造
+            for (Map.Entry<String, String> entry : condition.getParam().entrySet()) {
+                fact.put(entry.getKey(), entry.getValue());
+            }
         }
+        Map<String, Object> requestParam = new HashMap<>();
+        requestParam.put(K_FACT, fact);
+        requestParam.put(K_RULE_ID, message.getRuleId());
+        requestParam.put(K_PROJECT_ID, message.getProjectId());
+
+        // result
         String ruleContent = content.toString() + this.getResultInfo(resultExp.toString());
+        String jsonParam = JsonUtil.toJsonString(requestParam);
 
         log.info(">>> 编译后的ruleContent:{}", ruleContent);
+        log.info(">>> 编译后的jsonParam:{}", jsonParam);
 
-        return ruleContent;
+        final Map<String, String> compileMap = new HashMap();
+        compileMap.put(K_RULE_CONTENT, ruleContent);
+        compileMap.put(K_REQUEST_PARAM, jsonParam);
+        return compileMap;
     }
 
     /**

@@ -4,9 +4,7 @@ import com.ysf.velrs.engine.exception.CompileException;
 import com.ysf.velrs.engine.model.ConditionModel;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 表达式编译器
@@ -22,6 +20,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
     protected int expIndex;
     private String name; // 编译属性的名称
     private T clazz;
+    private Map<String, String> paramsMap;
 
     public CompileExpAbstract(ConditionModel.ExpBean exp, int conditionIndex, int expIndex, T clazz) {
         this.exp = exp;
@@ -29,6 +28,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         this.expIndex = expIndex;
         this.clazz = clazz;
         this.name = clazz.getSimpleName().toLowerCase();
+        this.paramsMap = new HashMap<>();
     }
 
     @Override
@@ -48,6 +48,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
                 .append("\"));\n");
         String expCode = sb.toString();
         log.info(">> expObj:{}", expCode);
+        paramsMap.put(sourceBean.getCode(), sourceBean.getName()); // source是传值对象，需要作为参数条件传进来的。
         return expCode;
     }
 
@@ -89,6 +90,8 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
                 } else if (Objects.equals(targetBean.getValueType(), "prop")) {
                     // 对象 stringExp0_1.contain(vars.get("sex")) =》 vars.get("sex")
                     sb.append("vars.get(\"").append(targetBean.getCode()).append("\")");
+                    // 对象是需要调用时传进来的。
+                    paramsMap.put(targetBean.getCode(), targetBean.getName());
                 } else {
                     new CompileException("target valueType not found, expectValue[value, prop]");
                 }
@@ -108,6 +111,11 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
     @Override
     public String getName() {
         return name + conditionIndex + "_" + expIndex;
+    }
+
+    @Override
+    public Map<String, String> getParam() {
+        return this.paramsMap;
     }
 
 }

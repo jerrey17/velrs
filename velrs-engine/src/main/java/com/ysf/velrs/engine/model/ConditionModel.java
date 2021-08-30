@@ -41,7 +41,6 @@ public class ConditionModel {
         @Data
         public static class SourceBean {
 
-            private String valueType;
             private String code;
             private String name;
             private String classType;
@@ -60,7 +59,6 @@ public class ConditionModel {
             private String value;
             private String code;
             private String name;
-            private String classType;
         }
     }
 }

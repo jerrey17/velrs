@@ -1,18 +1,5 @@
 package com.ysf.velrs.engine;
 
-import com.alibaba.fastjson.JSON;
-import com.ysf.velrs.engine.controller.message.CompileReqMessage;
-import com.ysf.velrs.engine.model.ConditionModel;
-import com.ysf.velrs.engine.model.ConditionModel.ExpBean.SourceBean;
-import com.ysf.velrs.engine.service.R_r01_1630222777817;
-import com.ysf.velrs.engine.service.compile.CompileHandler;
-import org.assertj.core.util.Lists;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @Author rui
  * @Date 2021-08-12 18:21
@@ -21,11 +8,9 @@ public class MainTest {
 
     public static void main(String[] args) throws Exception {
 
-        R_r01_1630222777817 r = new R_r01_1630222777817();
-        Map<String, String> map = new HashMap<>();
-        map.put("phoneNo", "15813306492");
-        map.put("myPhone", "1");
-        System.out.println(JSON.toJSONString(r.run(map)));
+
+        String param = "{\"fact\":{\"myPhone\":\"我的电话\",\"phoneNo\":\"我的电话\"},\"ruleId\":\"r01\",\"projectId\":\"p01\"}";
+        System.out.println(param);
 //
 //        SourceBean sourceBean = new SourceBean();
 //        sourceBean.setValueType("123");

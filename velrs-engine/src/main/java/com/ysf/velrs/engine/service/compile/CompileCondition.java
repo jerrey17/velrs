@@ -2,8 +2,7 @@ package com.ysf.velrs.engine.service.compile;
 
 import com.ysf.velrs.engine.exception.CompileException;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,5 +46,16 @@ public class CompileCondition implements CompileInterface {
     @Override
     public String getName() {
         return "result" + conditionIndex;
+    }
+
+    @Override
+    public Map<String, String> getParam() {
+        Map<String, String> param = new HashMap<>();
+        exps.stream().map(CompileInterface::getParam).forEach(data -> {
+            for (Map.Entry<String, String> entry : data.entrySet()) {
+                param.put(entry.getKey(), entry.getValue());
+            }
+        });
+        return param;
     }
 }

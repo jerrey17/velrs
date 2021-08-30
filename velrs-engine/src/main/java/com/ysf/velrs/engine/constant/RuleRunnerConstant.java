@@ -13,6 +13,8 @@ public interface RuleRunnerConstant {
     String TEST_TAG = "T_";
     String VERSION_TAG = "_V";
 
+    String RULE_TEMPLATE = "rule_template.ftl";
+
     // 规则版本控制redis key
     String REDIS_RULE_VERSION = "rule_version_";
     // 规节码redis key
