@@ -96,13 +96,13 @@ public class RunController {
             // 运行异常
             RuleRunnerBizException exception = (RuleRunnerBizException) throwable;
             log.error("{}-运行规则异常：{}", exception.getIdentityId(), exception.getMessage());
-            return Mono.just(RunRespModel.responseFailure(exception.getIdentityId(), throwable.getMessage()));
+            return Mono.just(RunRespModel.responseFailure("100001", throwable.getMessage()));
 
         } else if (throwable instanceof RuleExpiredException) {
             //规则表达式或参数翻译异常
             RuleExpiredException exception = (RuleExpiredException) throwable;
             log.error("{}-规则表达式异常或参数翻译异常：{}", exception.getIdentityId(), exception.getMessage());
-            return Mono.just(RunRespModel.responseFailure(exception.getIdentityId(), throwable.getMessage()));
+            return Mono.just(RunRespModel.responseFailure("100002", throwable.getMessage()));
         }
         return Mono.just(RunRespModel.responseFailure("500", throwable.getMessage()));
     }

@@ -46,7 +46,7 @@ public class CompileController {
             return new MessageWrapper<>(supplier.get());
         } catch (CompileException e) {
             log.error("编译时异常！", e);
-            return new MessageWrapper<>("100001", e.getMessage());
+            return new MessageWrapper<>("100003", e.getMessage());
         } catch (RuntimeException e) {
             log.error("系统运行时异常！", e);
             return new MessageWrapper<>(e);
