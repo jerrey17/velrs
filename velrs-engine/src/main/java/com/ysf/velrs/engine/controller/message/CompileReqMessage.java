@@ -3,6 +3,7 @@ package com.ysf.velrs.engine.controller.message;
 import com.ysf.velrs.engine.model.ConditionModel;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,6 +34,7 @@ public class CompileReqMessage {
      * 规则json
      */
     @NotNull(message = "rule不能为空")
+    @Valid
     private List<ConditionModel> rule;
 
     /**

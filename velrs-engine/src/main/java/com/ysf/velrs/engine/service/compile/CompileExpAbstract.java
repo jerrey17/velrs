@@ -36,7 +36,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         ConditionModel.ExpBean.SourceBean sourceBean = exp.getSource();
 
         if (!Objects.equals(clazz.getSimpleName(), sourceBean.getClassType())) {
-            throw new CompileException("Source ClassType Not Found");
+            throw new CompileException(String.format("Source ClassType Not Found [index:%s,%s]", conditionIndex, expIndex));
         }
 
         StringBuffer sb = new StringBuffer();
@@ -58,7 +58,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
             return ""; // 第一个条件没有逻辑拼接
         } else {
             if (Objects.isNull(exp.getLogicalExp())) {
-                throw new CompileException("LogicExp Not Found");
+                throw new CompileException(String.format("LogicExp Not Found [index:%s,%s]", conditionIndex, expIndex));
             }
             return " " + exp.getLogicalExp() + " ";
         }
@@ -67,18 +67,33 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
     @Override
     public String getExp() {
         ConditionModel.ExpBean.SourceBean sourceBean = exp.getSource();
+        List<ConditionModel.ExpBean.TargetBean> targetBeans = exp.getTarget();
 
-        if (!Arrays.stream(clazz.getMethods()).anyMatch(method -> Objects.equals(method.getName(), sourceBean.getMethod()))) {
-            throw new CompileException("Source Method Not Found");
+        if (!Arrays.stream(clazz.getMethods())
+                .anyMatch(method -> Objects.equals(method.getName(), sourceBean.getMethod())
+                        && method.getParameterCount() == sourceBean.getParamSize())) {
+            throw new CompileException(String.format("Source Method Not Found [index:%s,%s]", conditionIndex, expIndex));
         }
 
-        List<ConditionModel.ExpBean.TargetBean> targetBeans = exp.getTarget();
+        if(Objects.isNull(targetBeans)) {
+            if(sourceBean.getParamSize() != 0) {
+                throw new CompileException(String.format("Target Size Not Equal Source Param Size [index:%s,%s]", conditionIndex, expIndex));
+            }
+        } else {
+            if(sourceBean.getParamSize() == 0 && targetBeans.size() != 0) {
+                throw new CompileException(String.format("Target Size Not Equal Source Param Size [index:%s,%s]", conditionIndex, expIndex));
+            }
+            if(sourceBean.getParamSize() != exp.getTarget().size()) {
+                throw new CompileException(String.format("Target Not Found [index:%s,%s]", conditionIndex, expIndex));
+            }
+        }
+
         StringBuffer sb = new StringBuffer();
         sb.append(this.getName())
                 .append(".")
                 .append(sourceBean.getMethod())
                 .append("(");
-        if (sourceBean.getParamSize() > 0) {
+        if (Objects.nonNull(sourceBean) && sourceBean.getParamSize() > 0) {
             // 有参数
             for (int i = 0; i < targetBeans.size(); i++) {
                 ConditionModel.ExpBean.TargetBean targetBean = targetBeans.get(i);
@@ -100,7 +115,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
                 }
             }
         } else {
-            // 无参数：booleanExp0_0.isTrue()
+            // 无参数 do nothing...  demo：booleanExp0_0.isTrue()
         }
         sb.append(")");
         String exp = sb.toString();

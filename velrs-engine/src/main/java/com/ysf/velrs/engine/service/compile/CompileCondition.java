@@ -32,7 +32,7 @@ public class CompileCondition implements CompileInterface {
             return ""; // 第一个条件没有逻辑拼接
         } else {
             if (Objects.isNull(logic)) {
-                throw new CompileException("Logic Not Found");
+                throw new CompileException(String.format("Logic Not Found [index:%s]", conditionIndex));
             }
             return " " + logic + " ";
         }
