@@ -10,7 +10,7 @@ import com.ysf.velrs.engine.model.RunReqModel;
 public class RuleRunnerUtil {
 
     /**
-     * 获取类的名字。例如：R_101_1530604229117
+     * 获取类的名字。例如：R_10011_1123123242344
      *
      * @param ruleId 规则id
      * @param time   时间戳
@@ -24,7 +24,7 @@ public class RuleRunnerUtil {
     }
 
     /**
-     * 获取规则bean名称。例如：R_101
+     * 获取规则bean名称。例如：R_2341
      * 规则运行时的入参规则：最新规则不携带版本号。
      *
      * @param model 规则运行参数
@@ -38,10 +38,10 @@ public class RuleRunnerUtil {
     /**
      * 获取规则bean名称
      *
-     * @param ruleId
-     * @param version
-     * @param isLatest
-     * @return
+     * @param ruleId   规则id
+     * @param version  版本号
+     * @param isLatest 是否最新版本
+     * @return bean名称
      */
     public static String getRuleBeanName(String ruleId, Integer version, boolean isLatest) {
         if (isLatest) {
@@ -54,8 +54,8 @@ public class RuleRunnerUtil {
     /**
      * 测试bean名称
      *
-     * @param ruleId
-     * @return
+     * @param ruleId 规则id
+     * @return 测试bean名称
      */
     public static String getTestRuleBeanName(String ruleId) {
         return RuleRunnerConstant.NAME_PREFIX + RuleRunnerConstant.TEST_TAG + ruleId;

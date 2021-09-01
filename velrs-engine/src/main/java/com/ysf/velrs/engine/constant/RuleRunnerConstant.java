@@ -12,7 +12,7 @@ public interface RuleRunnerConstant {
     String NAME_PREFIX = "R_";
     String TEST_TAG = "T_";
     String VERSION_TAG = "_V";
-
+    // 规则模板
     String RULE_TEMPLATE = "rule_template.ftl";
 
     // 规则版本控制redis key

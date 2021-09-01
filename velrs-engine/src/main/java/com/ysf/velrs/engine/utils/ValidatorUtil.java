@@ -18,7 +18,7 @@ public class ValidatorUtil {
 
     public static void validate(final Object object) {
         if (Objects.isNull(object)) {
-            throw new RuntimeException("parameter is null");
+            throw new RuntimeException("param is null");
         }
         Set<ConstraintViolation<Object>> constraintViolations = VALIDATOR.validate(object);
         if (Objects.isNull(constraintViolations) || constraintViolations.isEmpty()) {

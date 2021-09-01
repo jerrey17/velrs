@@ -1,6 +1,5 @@
 package com.ysf.velrs.engine.service.ruleload;
 
-import com.ysf.velrs.engine.constant.RuleRunnerConstant;
 import com.ysf.velrs.engine.model.RuleCodeModel;
 import groovy.lang.GroovyClassLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +52,7 @@ public class RulerBeanLoader implements InitializingBean {
         beanFactory.registerBeanDefinition(ruleCodeModel.getBeanName(), beanDefinitionBuilder.getBeanDefinition());
         //注册到注册表
         ruleRegistry.registerRule(ruleCodeModel.getBeanName(), ruleCodeModel);
-        log.info(">>>rule-bean[{}] register success...", ruleCodeModel.getBeanName());
+        log.info(">>>规则bean[{}] 注册成功...", ruleCodeModel.getBeanName());
     }
 
     /**
@@ -64,7 +63,7 @@ public class RulerBeanLoader implements InitializingBean {
     public void destroyRule(String beanName) {
         ruleRegistry.destroy(beanName);
         beanFactory.destroySingleton(beanName);
-        log.info(">>>rule-bean[{}] destroy success...", beanName);
+        log.info(">>>规则bean[{}] 已销毁...", beanName);
     }
 
 }
