@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -60,7 +62,7 @@ public class CompileHandler {
 
         final Map<String, Object> compileMap = new HashMap();
         compileMap.put(K_CLASS_NAME, javaClassName);
-        compileMap.put(K_COMPILE_TIME, compileTime);
+        compileMap.put(K_COMPILE_TIME, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()));
         compileMap.put(K_RULE_CONTENT, ruleContent.get(K_RULE_CONTENT));
         compileMap.put(K_COMPILER, message.getOperator());
         compileMap.put(K_REMARK, "可执行规则");
@@ -68,7 +70,10 @@ public class CompileHandler {
         try {
             Template template = config.getTemplate(RuleRunnerConstant.RULE_TEMPLATE);
             String clazz = FreeMarkerTemplateUtils.processTemplateIntoString(template, compileMap);
-            log.info(">>> 编译后的类:{}", clazz);
+            log.info(">>> 编译后的类===>\n{}\n{}\n{}",
+                    "//////////////////////可执行规则 START//////////////////////////",
+                    clazz,
+                    "//////////////////////可执行规则 END  //////////////////////////");
 
             CompileRespMessage response = new CompileRespMessage();
             response.setRuleId(message.getRuleId());
@@ -81,8 +86,6 @@ public class CompileHandler {
         } catch (TemplateException e) {
             throw new CompileException("规则模板异常:" + e.getMessage(), e);
         }
-
-
     }
 
     /**
@@ -149,9 +152,14 @@ public class CompileHandler {
      * @return
      */
     private String getResultInfo(String resultExp) {
-        return "ResultInfo resultInfo = new ResultInfo();\n" +
-                "resultInfo.setPass(" + resultExp + ");\n" +
-                "return resultInfo;";
+        return new StringBuffer()
+                .append("\t\t")
+                .append("ResultInfo resultInfo = new ResultInfo();\n")
+                .append("\t\t")
+                .append("resultInfo.setPass(").append(resultExp).append(");\n")
+                .append("\t\t")
+                .append("return resultInfo;")
+                .toString();
     }
 
     /**

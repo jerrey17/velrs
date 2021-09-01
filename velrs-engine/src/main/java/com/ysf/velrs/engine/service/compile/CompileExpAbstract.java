@@ -40,7 +40,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         }
 
         StringBuffer sb = new StringBuffer();
-        sb.append(sourceBean.getClassType())
+        sb.append("\t\t").append(sourceBean.getClassType())
                 .append(" ")
                 .append(this.getName())
                 .append(" = new ").append(clazz.getSimpleName()).append("(vars.get(\"")

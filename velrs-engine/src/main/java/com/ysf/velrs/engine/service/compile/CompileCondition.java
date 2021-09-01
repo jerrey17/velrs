@@ -40,7 +40,7 @@ public class CompileCondition implements CompileInterface {
 
     @Override
     public String getExp() {
-        return "boolean " + this.getName() + " = " + exps.stream().map(data -> data.getLogic() + data.getExp()).collect(Collectors.joining()) + ";\n";
+        return "\t\tboolean " + this.getName() + " = " + exps.stream().map(data -> data.getLogic() + data.getExp()).collect(Collectors.joining()) + ";\n";
     }
 
     @Override

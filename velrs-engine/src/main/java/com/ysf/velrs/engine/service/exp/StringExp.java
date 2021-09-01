@@ -21,6 +21,10 @@ public class StringExp {
         this.data = data;
     }
 
+    public boolean test(String a, String b) {
+        return true;
+    }
+
     /**
      * 为空
      *
