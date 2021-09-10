@@ -2,6 +2,7 @@ package com.ysf.velrs.engine.service.exp;
 
 import com.ysf.velrs.engine.exception.RuleExpiredException;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,6 +22,13 @@ public class StringExp {
         this.data = data;
     }
 
+    /**
+     * todo 这是一个测试方法，之后记得删除
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public boolean test(String a, String b) {
         return true;
     }
@@ -132,6 +140,19 @@ public class StringExp {
             throw new RuleExpiredException("StringExp#notContain方法条件不能为空");
         }
         return !this.data.contains(target);
+    }
+
+    /**
+     * 任何一个匹配上
+     *
+     * @param target 多个匹配参数用英文逗号分隔
+     * @return
+     */
+    public boolean anyMatch(String target) {
+        if (Objects.isNull(target)) {
+            throw new RuleExpiredException("StringExp#eqAnyOne方法条件不能为空");
+        }
+        return Arrays.stream(target.split(",")).anyMatch(data -> Objects.equals(data, this.data));
     }
 
 

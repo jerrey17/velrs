@@ -6,5 +6,9 @@ package com.ysf.velrs.engine.service.exp;
  * @Author rui
  * @Date 2021-08-14 15:21
  **/
-public class AmountExp {
+public class AmountExp extends NumberExp {
+
+    public AmountExp(String data) {
+        super(data);
+    }
 }
