@@ -19,7 +19,7 @@ spring:
 # mybatis #
 ###########
 mybatis:
-  type-aliases-package: com.ysf.velrs.engine.domain
+  type-aliases-package: com.velrs.engine.domain
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 

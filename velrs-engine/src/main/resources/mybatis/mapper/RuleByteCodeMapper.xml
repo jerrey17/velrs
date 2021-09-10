@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ysf.velrs.engine.mapper.RuleByteCodeMapper">
+<mapper namespace="com.velrs.engine.mapper.RuleByteCodeMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="baseResultMap" type="com.ysf.velrs.engine.domain.RuleByteCode">
+    <resultMap id="baseResultMap" type="com.velrs.engine.domain.RuleByteCode">
         <!-- 主键id -->
         <id column="id" property="id"/>
         <!-- 规则id，要求为英文字母，无空格，且全局唯一 -->

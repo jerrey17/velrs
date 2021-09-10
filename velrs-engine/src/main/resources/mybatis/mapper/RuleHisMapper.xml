@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ysf.velrs.engine.mapper.RuleHisMapper">
+<mapper namespace="com.velrs.engine.mapper.RuleHisMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="baseResultMap" type="com.ysf.velrs.engine.domain.RuleHis">
+    <resultMap id="baseResultMap" type="com.velrs.engine.domain.RuleHis">
         <!-- PK，自动递增 -->
         <id column="id" property="id"/>
         <!-- 规则id -->
