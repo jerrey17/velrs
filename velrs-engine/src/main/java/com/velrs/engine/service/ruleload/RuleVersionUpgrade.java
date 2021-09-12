@@ -1,12 +1,13 @@
 package com.velrs.engine.service.ruleload;
 
 import com.alibaba.fastjson.JSON;
-import com.velrs.engine.utils.RuleVersionUtil;
 import com.velrs.engine.config.RuleGovernmentConfig;
+import com.velrs.engine.constant.RuleRunnerConstant;
 import com.velrs.engine.domain.RuleByteCode;
 import com.velrs.engine.model.RuleRegistryModel;
 import com.velrs.engine.service.data.RuleByteCodeService;
 import com.velrs.engine.service.manage.RunDegradationHandler;
+import com.velrs.engine.utils.RuleVersionUtil;
 import io.lettuce.core.RedisException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,8 @@ import org.springframework.dao.QueryTimeoutException;
 import org.springframework.data.redis.connection.PoolException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 规则版本升级管控
@@ -75,13 +78,25 @@ public class RuleVersionUpgrade {
      */
     private boolean versionUpgradeCheckByRedis(RuleRegistryModel model) {
         boolean ok = true;
+        final String versionKey = RuleVersionUtil.getVersionKey(model.getRuleId());
+        final String byteCodeKey = RuleVersionUtil.getByteCodeKey(model.getRuleId());
         try {
-            String newVersionStr = stringRedisTemplate.opsForValue().get(RuleVersionUtil.getVersionKey(model.getRuleId()));
+            String newVersionStr = stringRedisTemplate.opsForValue().get(versionKey);
 
-            // 疑问：当规则更新，redis设置了最新版本，但是过期了规则才运行，此时没主动更新，如何解决？
-            // 答：定时任务会在规则过期之前主动更新规则，所以不存在规则更新，没被发现的情况。
             if (StringUtils.isEmpty(newVersionStr)) {
-                log.debug("[ruleId:{}]-不存在最新版本", model.getRuleId());
+                log.debug("[ruleId:{}]-规则版本不存在，重新加载规则到redis", model.getRuleId());
+                RuleByteCode ruleByteCode = ruleByteCodeService.getByRuleId(model.getRuleId());
+                // 规则字节码对象写入redis（重新加载的就是最新的字节码）
+                stringRedisTemplate.opsForValue().set(byteCodeKey,
+                        JSON.toJSONString(ruleBuilder.buildNewVersionRule(ruleByteCode)),
+                        RuleRunnerConstant.VERSION_UP_TIME_OUT, TimeUnit.MINUTES);
+                // 升级版本：版本号写入redis
+                // 注：
+                // 1.版本的过期时间要比规则字节码的过期时间要早，避免runner在版本升级过程中，规则字节码过期，无法正常升级规则。
+                // 2.规则字节码写入redis必须在版本号写入redis之前。
+                stringRedisTemplate.opsForValue().set(versionKey,
+                        String.valueOf(ruleByteCode.getVersion()),
+                        RuleRunnerConstant.VERSION_UP_TIME_OUT - 5, TimeUnit.MINUTES);
                 return ok;
             }
 
@@ -92,7 +107,7 @@ public class RuleVersionUpgrade {
             }
 
             // 规则更新的时候，会将最新的规则同步到redis，且失效时间会比版本（REDIS_RULE_VERSION）的失效时间长。
-            String byteCodeStr = stringRedisTemplate.opsForValue().get(RuleVersionUtil.getByteCodeKey(model.getRuleId()));
+            String byteCodeStr = stringRedisTemplate.opsForValue().get(byteCodeKey);
             RuleByteCode ruleByteCode = JSON.parseObject(byteCodeStr, RuleByteCode.class);
             rulerBeanLoader.registerRule(ruleBuilder.buildNewVersionRule(ruleByteCode));
             log.info("[REDIS]-版本比对-规则版本变更-由V[{}]升级至V[{}]-ruleId:{};", model.getVersion(), newVersionStr, model.getRuleId());

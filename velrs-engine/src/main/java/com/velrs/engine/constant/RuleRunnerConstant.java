@@ -20,4 +20,7 @@ public interface RuleRunnerConstant {
     // 规节码redis key
     String REDIS_RULE_BYTE_CODE = "rule_byte_code_";
 
+    //版本升级的redis超时时间
+    long VERSION_UP_TIME_OUT = 30;
+
 }
