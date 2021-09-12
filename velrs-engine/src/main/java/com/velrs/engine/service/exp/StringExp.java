@@ -23,17 +23,6 @@ public class StringExp {
     }
 
     /**
-     * todo 这是一个测试方法，之后记得删除
-     *
-     * @param a
-     * @param b
-     * @return
-     */
-    public boolean test(String a, String b) {
-        return true;
-    }
-
-    /**
      * 为空
      *
      * @return
