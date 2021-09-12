@@ -23,11 +23,3 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 
-# rule config #
-###########
-velrs:
-  government:
-    gc-step: 5
-    max-call-fail-times: 6
-    max-beat-times: 6
-    run-loader-level: redis

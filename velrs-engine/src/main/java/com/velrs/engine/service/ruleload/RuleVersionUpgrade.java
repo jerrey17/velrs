@@ -78,16 +78,14 @@ public class RuleVersionUpgrade {
      */
     private boolean versionUpgradeCheckByRedis(RuleRegistryModel model) {
         boolean ok = true;
-        final String versionKey = RuleVersionUtil.getVersionKey(model.getRuleId());
-        final String byteCodeKey = RuleVersionUtil.getByteCodeKey(model.getRuleId());
         try {
+            final String versionKey = RuleVersionUtil.getVersionKey(model.getRuleId());
             String newVersionStr = stringRedisTemplate.opsForValue().get(versionKey);
-
             if (StringUtils.isEmpty(newVersionStr)) {
                 log.debug("[ruleId:{}]-规则版本不存在，重新加载规则到redis", model.getRuleId());
                 RuleByteCode ruleByteCode = ruleByteCodeService.getByRuleId(model.getRuleId());
                 // 规则字节码对象写入redis（重新加载的就是最新的字节码）
-                stringRedisTemplate.opsForValue().set(byteCodeKey,
+                stringRedisTemplate.opsForValue().set(RuleVersionUtil.getByteCodeKey(model.getRuleId()),
                         JSON.toJSONString(ruleBuilder.buildNewVersionRule(ruleByteCode)),
                         RuleRunnerConstant.VERSION_UP_TIME_OUT, TimeUnit.MINUTES);
                 // 升级版本：版本号写入redis
@@ -107,7 +105,7 @@ public class RuleVersionUpgrade {
             }
 
             // 规则更新的时候，会将最新的规则同步到redis，且失效时间会比版本（REDIS_RULE_VERSION）的失效时间长。
-            String byteCodeStr = stringRedisTemplate.opsForValue().get(byteCodeKey);
+            String byteCodeStr = stringRedisTemplate.opsForValue().get(RuleVersionUtil.getByteCodeKey(model.getRuleId()));
             RuleByteCode ruleByteCode = JSON.parseObject(byteCodeStr, RuleByteCode.class);
             rulerBeanLoader.registerRule(ruleBuilder.buildNewVersionRule(ruleByteCode));
             log.info("[REDIS]-版本比对-规则版本变更-由V[{}]升级至V[{}]-ruleId:{};", model.getVersion(), newVersionStr, model.getRuleId());

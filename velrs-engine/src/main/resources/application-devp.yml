@@ -38,3 +38,12 @@ spring:
         min-idle: 0
         max-wait: 5000
         time-between-eviction-runs: 900s
+
+# rule config #
+###########
+velrs:
+  government:
+    gc-step: 1
+    max-call-fail-times: 1
+    max-beat-times: 2
+    run-loader-level: db
