@@ -16,7 +16,7 @@ spring:
     username: root
     password: root
     hikari:
-      pool-name: velrs_engine_hikari_jdbc
+      pool-name: velrs_mgt_hikari_jdbc
       minimum-idle: 1
       maximum-pool-size: 20
       idle-timeout: 600000

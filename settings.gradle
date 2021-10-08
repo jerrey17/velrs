@@ -1,3 +1,4 @@
 
 rootProject.name = 'velrs'
 include 'velrs-engine'
+include 'velrs-mgt'

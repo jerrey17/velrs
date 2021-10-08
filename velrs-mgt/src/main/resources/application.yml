@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+# spring #
+##########
+spring:
+  application:
+    name: velrs-mgt
+  profiles:
+    active: devp
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+# mybatis #
+###########
+mybatis:
+  type-aliases-package: com.velrs.mgt.domain
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
