@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.velrs.mgt.mapper.RuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="baseResultMap" type="com.velrs.mgt.domain.Rule">
+        <!-- 自动递增id -->
+        <id column="id" property="id"/>
+        <!-- 规则id，要求为英文字母，无空格，且全局唯一 -->
+        <result column="rule_id" property="ruleId"/>
+        <!-- 规则中文名称 -->
+        <result column="rule_name" property="ruleName"/>
+        <!-- 规则所属项目ID -->
+        <result column="project_id" property="projectId"/>
+        <!-- 规则状态：0:初始（未编辑）;2:编辑中;3:已编译;1:已发布 -->
+        <result column="rule_status" property="ruleStatus"/>
+        <!-- 测试状态：0：待测试；1：已测试 -->
+        <result column="test_status" property="testStatus"/>
+        <!-- 编译时间，测试类名会取该时间 -->
+        <result column="compile_time" property="compileTime"/>
+        <!-- 规则发布状态：0=待发布;1=已发布; -->
+        <result column="publish_status" property="publishStatus"/>
+        <!-- 最后编辑时间 -->
+        <result column="last_edit_time" property="lastEditTime"/>
+        <!-- 最后编辑用户 -->
+        <result column="last_edit_user_id" property="lastEditUserId"/>
+        <!-- 最后编译时间 -->
+        <result column="last_compile_time" property="lastCompileTime"/>
+        <!-- 最后编译用户 -->
+        <result column="last_compile_user_id" property="lastCompileUserId"/>
+        <!-- 最后一次发布的版本号（发布的时候才累加） -->
+        <result column="last_publish_version" property="lastPublishVersion"/>
+        <!-- 规则创建人id -->
+        <result column="create_user_id" property="createUserId"/>
+        <!-- 创建时间 -->
+        <result column="create_time" property="createTime"/>
+        <!-- 更新时间 -->
+        <result column="update_time" property="updateTime"/>
+        <!-- 规则描述 -->
+        <result column="description" property="description"/>
+        <!-- 当前正在编辑的规则 -->
+        <result column="rule" property="rule"/>
+        <!-- 编译的字节码 -->
+        <result column="rule_class_code" property="ruleClassCode"/>
+        <!-- 测试请求参数 -->
+        <result column="call_param" property="callParam"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        `id`,
+        `rule_id`,
+        `rule_name`,
+        `project_id`,
+        `rule_status`,
+        `test_status`,
+        `compile_time`,
+        `publish_status`,
+        `last_edit_time`,
+        `last_edit_user_id`,
+        `last_compile_time`,
+        `last_compile_user_id`,
+        `last_publish_version`,
+        `create_user_id`,
+        `create_time`,
+        `update_time`,
+        `description`,
+        `rule`,
+        `rule_class_code`,
+        `call_param`
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO `t_rule`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="domain.id != null">`id`,</if>
+            <if test="domain.ruleId != null">`rule_id`,</if>
+            <if test="domain.ruleName != null">`rule_name`,</if>
+            <if test="domain.projectId != null">`project_id`,</if>
+            <if test="domain.ruleStatus != null">`rule_status`,</if>
+            <if test="domain.testStatus != null">`test_status`,</if>
+            <if test="domain.compileTime != null">`compile_time`,</if>
+            <if test="domain.publishStatus != null">`publish_status`,</if>
+            <if test="domain.lastEditTime != null">`last_edit_time`,</if>
+            <if test="domain.lastEditUserId != null">`last_edit_user_id`,</if>
+            <if test="domain.lastCompileTime != null">`last_compile_time`,</if>
+            <if test="domain.lastCompileUserId != null">`last_compile_user_id`,</if>
+            <if test="domain.lastPublishVersion != null">`last_publish_version`,</if>
+            <if test="domain.createUserId != null">`create_user_id`,</if>
+            <if test="domain.createTime != null">`create_time`,</if>
+            <if test="domain.updateTime != null">`update_time`,</if>
+            <if test="domain.description != null">`description`,</if>
+            <if test="domain.rule != null">`rule`,</if>
+            <if test="domain.ruleClassCode != null">`rule_class_code`,</if>
+            <if test="domain.callParam != null">`call_param`,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="domain.id != null">#{domain.id},</if>
+            <if test="domain.ruleId != null">#{domain.ruleId},</if>
+            <if test="domain.ruleName != null">#{domain.ruleName},</if>
+            <if test="domain.projectId != null">#{domain.projectId},</if>
+            <if test="domain.ruleStatus != null">#{domain.ruleStatus},</if>
+            <if test="domain.testStatus != null">#{domain.testStatus},</if>
+            <if test="domain.compileTime != null">#{domain.compileTime},</if>
+            <if test="domain.publishStatus != null">#{domain.publishStatus},</if>
+            <if test="domain.lastEditTime != null">#{domain.lastEditTime},</if>
+            <if test="domain.lastEditUserId != null">#{domain.lastEditUserId},</if>
+            <if test="domain.lastCompileTime != null">#{domain.lastCompileTime},</if>
+            <if test="domain.lastCompileUserId != null">#{domain.lastCompileUserId},</if>
+            <if test="domain.lastPublishVersion != null">#{domain.lastPublishVersion},</if>
+            <if test="domain.createUserId != null">#{domain.createUserId},</if>
+            <if test="domain.createTime != null">#{domain.createTime},</if>
+            <if test="domain.updateTime != null">#{domain.updateTime},</if>
+            <if test="domain.description != null">#{domain.description},</if>
+            <if test="domain.rule != null">#{domain.rule},</if>
+            <if test="domain.ruleClassCode != null">#{domain.ruleClassCode},</if>
+            <if test="domain.callParam != null">#{domain.callParam},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertList">
+        INSERT INTO `t_rule`(
+        <include refid="baseColumnList"/>
+        )VALUES
+        <foreach collection="domains" item="domain" index="index" separator=",">
+            (
+                #{domain.id},
+                #{domain.ruleId},
+                #{domain.ruleName},
+                #{domain.projectId},
+                #{domain.ruleStatus},
+                #{domain.testStatus},
+                #{domain.compileTime},
+                #{domain.publishStatus},
+                #{domain.lastEditTime},
+                #{domain.lastEditUserId},
+                #{domain.lastCompileTime},
+                #{domain.lastCompileUserId},
+                #{domain.lastPublishVersion},
+                #{domain.createUserId},
+                #{domain.createTime},
+                #{domain.updateTime},
+                #{domain.description},
+                #{domain.rule},
+                #{domain.ruleClassCode},
+                #{domain.callParam}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE `t_rule`
+        <set>
+            <if test="domain.id != null">`id` = #{domain.id},</if>
+            <if test="domain.ruleId != null">`rule_id` = #{domain.ruleId},</if>
+            <if test="domain.ruleName != null">`rule_name` = #{domain.ruleName},</if>
+            <if test="domain.projectId != null">`project_id` = #{domain.projectId},</if>
+            <if test="domain.ruleStatus != null">`rule_status` = #{domain.ruleStatus},</if>
+            <if test="domain.testStatus != null">`test_status` = #{domain.testStatus},</if>
+            <if test="domain.compileTime != null">`compile_time` = #{domain.compileTime},</if>
+            <if test="domain.publishStatus != null">`publish_status` = #{domain.publishStatus},</if>
+            <if test="domain.lastEditTime != null">`last_edit_time` = #{domain.lastEditTime},</if>
+            <if test="domain.lastEditUserId != null">`last_edit_user_id` = #{domain.lastEditUserId},</if>
+            <if test="domain.lastCompileTime != null">`last_compile_time` = #{domain.lastCompileTime},</if>
+            <if test="domain.lastCompileUserId != null">`last_compile_user_id` = #{domain.lastCompileUserId},</if>
+            <if test="domain.lastPublishVersion != null">`last_publish_version` = #{domain.lastPublishVersion},</if>
+            <if test="domain.createUserId != null">`create_user_id` = #{domain.createUserId},</if>
+            <if test="domain.createTime != null">`create_time` = #{domain.createTime},</if>
+            <if test="domain.updateTime != null">`update_time` = #{domain.updateTime},</if>
+            <if test="domain.description != null">`description` = #{domain.description},</if>
+            <if test="domain.rule != null">`rule` = #{domain.rule},</if>
+            <if test="domain.ruleClassCode != null">`rule_class_code` = #{domain.ruleClassCode},</if>
+            <if test="domain.callParam != null">`call_param` = #{domain.callParam},</if>
+        </set>
+        WHERE `id` = #{domain.id}
+    </update>
+
+    <select id="select" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumnList"/>
+        FROM `t_rule`
+        <if test="domain != null">
+            <where>
+                <if test="domain.id != null">AND `id` = #{domain.id}</if>
+                <if test="domain.ruleId != null">AND `rule_id` = #{domain.ruleId}</if>
+                <if test="domain.ruleName != null">AND `rule_name` = #{domain.ruleName}</if>
+                <if test="domain.projectId != null">AND `project_id` = #{domain.projectId}</if>
+                <if test="domain.ruleStatus != null">AND `rule_status` = #{domain.ruleStatus}</if>
+                <if test="domain.testStatus != null">AND `test_status` = #{domain.testStatus}</if>
+                <if test="domain.compileTime != null">AND `compile_time` = #{domain.compileTime}</if>
+                <if test="domain.publishStatus != null">AND `publish_status` = #{domain.publishStatus}</if>
+                <if test="domain.lastEditTime != null">AND `last_edit_time` = #{domain.lastEditTime}</if>
+                <if test="domain.lastEditUserId != null">AND `last_edit_user_id` = #{domain.lastEditUserId}</if>
+                <if test="domain.lastCompileTime != null">AND `last_compile_time` = #{domain.lastCompileTime}</if>
+                <if test="domain.lastCompileUserId != null">AND `last_compile_user_id` = #{domain.lastCompileUserId}</if>
+                <if test="domain.lastPublishVersion != null">AND `last_publish_version` = #{domain.lastPublishVersion}</if>
+                <if test="domain.createUserId != null">AND `create_user_id` = #{domain.createUserId}</if>
+                <if test="domain.createTime != null">AND `create_time` = #{domain.createTime}</if>
+                <if test="domain.updateTime != null">AND `update_time` = #{domain.updateTime}</if>
+                <if test="domain.description != null">AND `description` = #{domain.description}</if>
+                <if test="domain.rule != null">AND `rule` = #{domain.rule}</if>
+                <if test="domain.ruleClassCode != null">AND `rule_class_code` = #{domain.ruleClassCode}</if>
+                <if test="domain.callParam != null">AND `call_param` = #{domain.callParam}</if>
+            </where>
+        </if>
+    </select>
+
+    <select id="selectOne" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumnList"/>
+        FROM `t_rule`
+        <if test="domain != null">
+            <where>
+                <if test="domain.id != null">AND `id` = #{domain.id}</if>
+                <if test="domain.ruleId != null">AND `rule_id` = #{domain.ruleId}</if>
+                <if test="domain.ruleName != null">AND `rule_name` = #{domain.ruleName}</if>
+                <if test="domain.projectId != null">AND `project_id` = #{domain.projectId}</if>
+                <if test="domain.ruleStatus != null">AND `rule_status` = #{domain.ruleStatus}</if>
+                <if test="domain.testStatus != null">AND `test_status` = #{domain.testStatus}</if>
+                <if test="domain.compileTime != null">AND `compile_time` = #{domain.compileTime}</if>
+                <if test="domain.publishStatus != null">AND `publish_status` = #{domain.publishStatus}</if>
+                <if test="domain.lastEditTime != null">AND `last_edit_time` = #{domain.lastEditTime}</if>
+                <if test="domain.lastEditUserId != null">AND `last_edit_user_id` = #{domain.lastEditUserId}</if>
+                <if test="domain.lastCompileTime != null">AND `last_compile_time` = #{domain.lastCompileTime}</if>
+                <if test="domain.lastCompileUserId != null">AND `last_compile_user_id` = #{domain.lastCompileUserId}</if>
+                <if test="domain.lastPublishVersion != null">AND `last_publish_version` = #{domain.lastPublishVersion}</if>
+                <if test="domain.createUserId != null">AND `create_user_id` = #{domain.createUserId}</if>
+                <if test="domain.createTime != null">AND `create_time` = #{domain.createTime}</if>
+                <if test="domain.updateTime != null">AND `update_time` = #{domain.updateTime}</if>
+                <if test="domain.description != null">AND `description` = #{domain.description}</if>
+                <if test="domain.rule != null">AND `rule` = #{domain.rule}</if>
+                <if test="domain.ruleClassCode != null">AND `rule_class_code` = #{domain.ruleClassCode}</if>
+                <if test="domain.callParam != null">AND `call_param` = #{domain.callParam}</if>
+            </where>
+        </if>
+        LIMIT 1
+    </select>
+
+</mapper>

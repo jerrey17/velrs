@@ -1,6 +1,6 @@
-package com.velrs.engine.controller.message;
+package com.velrs.mgt.controller.message;
 
-import com.velrs.engine.model.ConditionModel;
+import com.velrs.mgt.model.ConditionModel;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -14,14 +14,28 @@ import java.util.List;
  * @Date 2021-08-18 16:20
  **/
 @Data
-public class CompileReqMessage {
+public class CreateReqMessage {
+
+    /**
+     * 自增id
+     * 如果传了，则表示更新。
+     * 如果没传，则表示新增。
+     */
+    private Integer id;
 
     /**
      * 规则id
      */
-    @Size(max = 32, message = "ruleId不超过{max}位")
+    @Size(max = 64, message = "ruleId不超过{max}位")
     @NotBlank(message = "ruleId不能为空")
     private String ruleId;
+
+    /**
+     * 规则名称
+     */
+    @Size(max = 128, message = "ruleName不超过{max}位")
+    @NotBlank(message = "ruleName不能为空")
+    private String ruleName;
 
     /**
      * 项目id
@@ -38,11 +52,16 @@ public class CompileReqMessage {
     private List<ConditionModel> rule;
 
     /**
-     * 操作人id
+     * 操作人用户ID
      */
-    @Size(max = 11, message = "operator不超过{max}位")
-    @NotBlank(message = "operator不能为空")
-    private String operator;
+    @NotNull
+    private Long operatorUserId;
+
+    /**
+     * 规则描述
+     */
+    @Size(max = 256, message = "description不超过{max}位")
+    private String description;
 
 
 }
