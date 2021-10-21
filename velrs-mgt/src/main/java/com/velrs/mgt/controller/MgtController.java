@@ -37,13 +37,6 @@ public class MgtController {
     private PublishService publishService;
 
     /**
-     * 创建和编辑规则接口开发
-     * 编译结果保存开发
-     * 测试结果保存开发
-     * 规则发布接口开发
-     */
-
-    /**
      * 创建或更新规则
      *
      * @param reqMessage
