@@ -35,4 +35,6 @@ public interface RuleByteCodeService {
      */
     RuleByteCode selectOne(RuleByteCode domain);
 
+    RuleByteCode selectByRuleId(String ruleId);
+
 }

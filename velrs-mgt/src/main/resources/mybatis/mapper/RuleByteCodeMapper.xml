@@ -110,7 +110,7 @@
             <if test="domain.createTime != null">`create_time` = #{domain.createTime},</if>
             <if test="domain.updateTime != null">`update_time` = #{domain.updateTime},</if>
         </set>
-        WHERE `id` = #{domain.id}
+        WHERE `id` = #{domain.id} and `version` = #{domain.version} - 1
     </update>
 
     <select id="select" resultMap="baseResultMap">

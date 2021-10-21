@@ -5,6 +5,7 @@ import com.velrs.mgt.controller.message.MessageWrapper;
 import com.velrs.mgt.controller.message.SaveCompileResultReqMessage;
 import com.velrs.mgt.exception.BizException;
 import com.velrs.mgt.service.biz.CompileResultService;
+import com.velrs.mgt.service.biz.PublishService;
 import com.velrs.mgt.service.biz.SaveRuleService;
 import com.velrs.mgt.service.biz.TestResultService;
 import com.velrs.mgt.utils.ValidatorUtil;
@@ -32,6 +33,8 @@ public class MgtController {
     private CompileResultService compileResultService;
     @Autowired
     private TestResultService testResultService;
+    @Autowired
+    private PublishService publishService;
 
     /**
      * 创建和编辑规则接口开发
@@ -82,10 +85,10 @@ public class MgtController {
     @PostMapping("velrs/mgt/{ruleId}/test/{result}")
     public MessageWrapper<String> saveByTest(@PathVariable String ruleId, @PathVariable Boolean result) {
         return process(() -> {
-            if(StringUtils.isBlank(ruleId) || Objects.isNull(result)) {
+            if (StringUtils.isBlank(ruleId) || Objects.isNull(result)) {
                 throw new BizException("参数错误");
             }
-            if(!result.booleanValue()) {
+            if (!result.booleanValue()) {
                 throw new BizException("测试失败，不允许保存");
             }
             testResultService.saveTestPass(ruleId);
@@ -93,7 +96,21 @@ public class MgtController {
         });
     }
 
-    public void publish() {
+    /**
+     * 发布
+     *
+     * @param ruleId
+     * @return
+     */
+    @PostMapping("velrs/mgt/publish/{ruleId}")
+    public MessageWrapper<String> publish(@PathVariable String ruleId) {
+        return process(() -> {
+            if (StringUtils.isBlank(ruleId)) {
+                throw new BizException("参数错误");
+            }
+            publishService.publish(ruleId);
+            return ruleId;
+        });
 
     }
 
