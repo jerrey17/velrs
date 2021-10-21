@@ -6,14 +6,14 @@ import com.velrs.mgt.controller.message.SaveCompileResultReqMessage;
 import com.velrs.mgt.exception.BizException;
 import com.velrs.mgt.service.biz.CompileResultService;
 import com.velrs.mgt.service.biz.SaveRuleService;
+import com.velrs.mgt.service.biz.TestResultService;
 import com.velrs.mgt.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -30,6 +30,8 @@ public class MgtController {
     private SaveRuleService saveRuleService;
     @Autowired
     private CompileResultService compileResultService;
+    @Autowired
+    private TestResultService testResultService;
 
     /**
      * 创建和编辑规则接口开发
@@ -71,8 +73,24 @@ public class MgtController {
     }
 
 
-    public void saveByTest() {
-
+    /**
+     * 保存测试结果
+     *
+     * @param ruleId
+     * @param result
+     */
+    @PostMapping("velrs/mgt/{ruleId}/test/{result}")
+    public MessageWrapper<String> saveByTest(@PathVariable String ruleId, @PathVariable Boolean result) {
+        return process(() -> {
+            if(StringUtils.isBlank(ruleId) || Objects.isNull(result)) {
+                throw new BizException("参数错误");
+            }
+            if(!result.booleanValue()) {
+                throw new BizException("测试失败，不允许保存");
+            }
+            testResultService.saveTestPass(ruleId);
+            return ruleId;
+        });
     }
 
     public void publish() {
