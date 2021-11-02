@@ -42,11 +42,14 @@ public class MgtController {
      * @param reqMessage
      * @return
      */
-    @PostMapping("velrs/mgt/create_or_update")
+    @PostMapping("/velrs/mgt/create_or_update")
     public @ResponseBody
     MessageWrapper<String> createOrUpdate(@RequestBody CreateReqMessage reqMessage) {
         return process(() -> {
             ValidatorUtil.validate(reqMessage);
+            if(reqMessage.getRule().size() == 0) {
+                throw new BizException("rule不能为空");
+            }
             saveRuleService.saveOrUpdate(reqMessage);
             return reqMessage.getRuleId();
         });
@@ -58,7 +61,7 @@ public class MgtController {
      * @param reqMessage
      * @returnxx
      */
-    @PostMapping("velrs/mgt/compile_result/save")
+    @PostMapping("/velrs/mgt/compile_result/save")
     public @ResponseBody
     MessageWrapper<String> saveByCompile(@RequestBody SaveCompileResultReqMessage reqMessage) {
         return process(() -> {
@@ -75,7 +78,7 @@ public class MgtController {
      * @param ruleId
      * @param result
      */
-    @PostMapping("velrs/mgt/{ruleId}/test/{result}")
+    @PostMapping("/velrs/mgt/{ruleId}/test/{result}")
     public MessageWrapper<String> saveByTest(@PathVariable String ruleId, @PathVariable Boolean result) {
         return process(() -> {
             if (StringUtils.isBlank(ruleId) || Objects.isNull(result)) {
@@ -95,7 +98,7 @@ public class MgtController {
      * @param ruleId
      * @return
      */
-    @PostMapping("velrs/mgt/publish/{ruleId}")
+    @PostMapping("/velrs/mgt/publish/{ruleId}")
     public MessageWrapper<String> publish(@PathVariable String ruleId) {
         return process(() -> {
             if (StringUtils.isBlank(ruleId)) {

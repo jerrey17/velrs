@@ -24,7 +24,7 @@ public class CreateReqMessage {
     private Integer id;
 
     /**
-     * 规则id
+     * 规则id, 全局唯一。
      */
     @Size(max = 64, message = "ruleId不超过{max}位")
     @NotBlank(message = "ruleId不能为空")

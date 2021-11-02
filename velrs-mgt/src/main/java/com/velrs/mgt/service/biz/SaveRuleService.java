@@ -36,7 +36,7 @@ public class SaveRuleService {
      */
     @Transactional
     public void saveOrUpdate(CreateReqMessage reqMessage) {
-        if (Objects.nonNull(reqMessage.getId())) {
+        if (Objects.nonNull(reqMessage.getId()) && reqMessage.getId() != 0) {
             // edit
             this.update(reqMessage);
         } else {
