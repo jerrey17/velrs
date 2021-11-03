@@ -1,15 +1,14 @@
 package com.velrs.engine.service.compile;
 
 import com.velrs.engine.constant.RuleRunnerConstant;
-import com.velrs.engine.exception.CompileException;
-import com.velrs.engine.service.exp.BooleanExp;
-import com.velrs.engine.service.exp.StringExp;
-import com.velrs.engine.utils.RuleRunnerUtil;
 import com.velrs.engine.controller.message.CompileReqMessage;
 import com.velrs.engine.controller.message.CompileRespMessage;
 import com.velrs.engine.enums.ExpEnum;
+import com.velrs.engine.exception.CompileException;
 import com.velrs.engine.model.ConditionModel;
+import com.velrs.engine.service.exp.*;
 import com.velrs.engine.utils.JsonUtil;
+import com.velrs.engine.utils.RuleRunnerUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -179,6 +178,12 @@ public class CompileHandler {
                 return new CompileStringExp(exp, conditionIndex, expIndex);
             case BooleanExp:
                 return new CompileBooleanExp(exp, conditionIndex, expIndex);
+            case DateExp:
+                return new CompileDateExp(exp, conditionIndex, expIndex);
+            case NumberExp:
+                return new CompileNumberExp(exp, conditionIndex, expIndex);
+            case AmountExp:
+                return new CompileAmountExp(exp, conditionIndex, expIndex);
         }
         throw new CompileException("不认识的规则表达式");
     }
@@ -201,4 +206,33 @@ public class CompileHandler {
             super(exp, conditionIndex, expIndex, BooleanExp.class);
         }
     }
+
+    /**
+     * 日期表达式编译
+     */
+    public static class CompileDateExp extends CompileExpAbstract {
+        public CompileDateExp(ConditionModel.ExpBean exp, int conditionIndex, int expIndex) {
+            super(exp, conditionIndex, expIndex, DateExp.class);
+        }
+    }
+
+    /**
+     * 数值表达式编译
+     */
+    public static class CompileNumberExp extends CompileExpAbstract {
+        public CompileNumberExp(ConditionModel.ExpBean exp, int conditionIndex, int expIndex) {
+            super(exp, conditionIndex, expIndex, NumberExp.class);
+        }
+    }
+
+    /**
+     * 金额表达式编译
+     */
+    public static class CompileAmountExp extends CompileExpAbstract {
+        public CompileAmountExp(ConditionModel.ExpBean exp, int conditionIndex, int expIndex) {
+            super(exp, conditionIndex, expIndex, AmountExp.class);
+        }
+    }
+
+
 }
