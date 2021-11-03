@@ -92,11 +92,12 @@ public class DateExp {
      * @param day
      * @return
      */
-    public boolean innerRangeByDay(String target, int day) {
+    public boolean innerRangeByDay(String target, String day) {
         return this.supplier(() -> {
+            Integer currentDay = Integer.parseInt(day);
             LocalDateTime tarTime = LocalDateTime.parse(target, DATE_TIME_FORMATTER);
-            LocalDateTime min = this.source.minusDays(day);
-            LocalDateTime max = this.source.plusDays(day);
+            LocalDateTime min = this.source.minusDays(currentDay);
+            LocalDateTime max = this.source.plusDays(currentDay);
             int left = tarTime.compareTo(min);
             int right = tarTime.compareTo(max);
             return left >= 0 && right <= 0;
@@ -109,11 +110,12 @@ public class DateExp {
      * @param minute
      * @return
      */
-    public boolean innerRangeByMin(String target, int minute) {
+    public boolean innerRangeByMin(String target, String minute) {
         return this.supplier(() -> {
+            Integer currentMinute = Integer.parseInt(minute);
             LocalDateTime tarTime = LocalDateTime.parse(target, DATE_TIME_FORMATTER);
-            LocalDateTime min = this.source.minusMinutes(minute);
-            LocalDateTime max = this.source.plusMinutes(minute);
+            LocalDateTime min = this.source.minusMinutes(currentMinute);
+            LocalDateTime max = this.source.plusMinutes(currentMinute);
             int left = tarTime.compareTo(min);
             int right = tarTime.compareTo(max);
             return left >= 0 && right <= 0;
@@ -149,8 +151,8 @@ public class DateExp {
         System.out.println(dateExp.between("2021-09-01 23:49:32", "2021-09-20 23:49:32"));
         System.out.println(dateExp.between("2021-09-12 23:49:32", "2021-09-13 23:49:32"));
         System.out.println(dateExp.between("2021-09-11 23:49:32", "2021-09-12 23:49:32"));
-        System.out.println(dateExp.innerRangeByDay("2021-09-12 01:49:32", 1));
-        System.out.println(dateExp.innerRangeByMin("2021-09-12 23:50:32", 10));
+        System.out.println(dateExp.innerRangeByDay("2021-09-12 01:49:32", "1"));
+        System.out.println(dateExp.innerRangeByMin("2021-09-12 23:50:32", "10"));
 
 
     }
