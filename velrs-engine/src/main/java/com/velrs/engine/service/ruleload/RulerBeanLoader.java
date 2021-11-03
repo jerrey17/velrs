@@ -46,8 +46,6 @@ public class RulerBeanLoader implements InitializingBean {
         String javaCode = new String(Base64.getDecoder().decode(ruleCodeModel.getRuleClassCode()));
         Class rClass = groovyClassLoader.parseClass(javaCode);
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(rClass);
-        // TODO configurableApplicationContext.getBean(RunnerContext.class) 可能存在多个实例？
-//        beanDefinitionBuilder.addPropertyValue(RuleRunnerConstant.RUN_CONTEXT_BEAN_NAME, configurableApplicationContext.getBean(RunnerContext.class));
         //注册bean实例
         beanFactory.registerBeanDefinition(ruleCodeModel.getBeanName(), beanDefinitionBuilder.getBeanDefinition());
         //注册到注册表
