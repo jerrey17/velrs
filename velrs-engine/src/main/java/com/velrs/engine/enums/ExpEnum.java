@@ -14,6 +14,9 @@ public enum ExpEnum {
 
     StringExp("StringExp", "字符串表达式"),
     BooleanExp("BooleanExp", "布尔表达式"),
+    DateExp("DateExp", "日期表达式"),
+    NumberExp("NumberExp", "数值表达式"),
+    AmountExp("AmountExp", "金额表达式"),
 
     ;
 
