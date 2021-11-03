@@ -12,6 +12,7 @@ import com.velrs.mgt.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -27,6 +28,9 @@ import java.util.function.Supplier;
 @RestController
 public class MgtController {
 
+    // 规则版本控制redis key
+    private static final String REDIS_RULE_VERSION = "rule_version_";
+
     @Autowired
     private SaveRuleService saveRuleService;
     @Autowired
@@ -35,6 +39,8 @@ public class MgtController {
     private TestResultService testResultService;
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 创建或更新规则
@@ -105,6 +111,17 @@ public class MgtController {
                 throw new BizException("参数错误");
             }
             publishService.publish(ruleId);
+
+            /**
+             * 策略1：
+             *      不做redis删除，则保证最终一致性：redis缓存规则30分钟，三十分钟后会自动加载最新的规则。我们必须对外承诺规则更新后三十分钟后生效。
+             *
+             * 策略2（目前采用的是【策略2】，若希望切换成【策略1】，则注释掉下面删除redis key的代码）：
+             *      主动删除redis版本，则保证强一致性：规则发布后redis的缓存会被删除，则下一次执行规则时，会主动从db获取最新版本的规则运行。
+             *
+             * 规则发布后，版本会升级。删除缓存中的规则版本后，在规则运行时会主动去获取最新版本的规则执行。
+             */
+            stringRedisTemplate.delete(REDIS_RULE_VERSION + ruleId);
             return ruleId;
         });
 
