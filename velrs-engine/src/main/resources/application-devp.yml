@@ -46,4 +46,4 @@ velrs:
     gc-step: 5
     max-call-fail-times: 6
     max-beat-times: 6
-    run-loader-level: redis
+    run-loader-level: db

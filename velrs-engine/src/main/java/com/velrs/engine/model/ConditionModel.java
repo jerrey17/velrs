@@ -40,7 +40,7 @@ public class ConditionModel {
         private List<TargetBean> target;
 
         /**
-         * 逻辑表达式拼接
+         * 逻辑表达式拼接 或且非（非不支持）
          */
         private String logicalExp;
 

@@ -1,5 +1,11 @@
 package com.velrs.engine;
 
+import com.alibaba.fastjson.JSON;
+import com.velrs.engine.model.ResultInfo;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Author rui
  * @Date 2021-08-12 18:21
@@ -8,9 +14,21 @@ public class MainTest {
 
     public static void main(String[] args) throws Exception {
 
+        Map<String, String> map = new HashMap<>();
+        map.put("invoiceAmount", "1221");
+        map.put("invoiceName", "夜总会");
+        map.put("thirdInvoiceAmount", "122");
+        map.put("invoiceDate", "2022-12-12 12:12:12");
+        map.put("thirdInvoiceDate", "2022-12-12 12:12:12");
 
-        String param = "{\"fact\":{\"myPhone\":\"我的电话\",\"phoneNo\":\"我的电话\"},\"ruleId\":\"r01\",\"projectId\":\"p01\"}";
-        System.out.println(param);
+        R_demo1_1651409295860 r_demo1_1651409295860 = new R_demo1_1651409295860();
+
+        ResultInfo resultInfo = r_demo1_1651409295860.run(map);
+
+        System.out.println(JSON.toJSONString(resultInfo));
+
+//        String param = "{\"fact\":{\"myPhone\":\"我的电话\",\"phoneNo\":\"我的电话\"},\"ruleId\":\"r01\",\"projectId\":\"p01\"}";
+//        System.out.println(param);
 //
 //        SourceBean sourceBean = new SourceBean();
 //        sourceBean.setValueType("123");

@@ -1,5 +1,8 @@
 package com.velrs.engine.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 结果信息
  *
@@ -21,6 +24,8 @@ public class ResultInfo {
      */
     private String resultMsg;
 
+    private List<String> runDetail = new ArrayList<>();
+
     public boolean isPass() {
         return isPass;
     }
@@ -35,5 +40,14 @@ public class ResultInfo {
 
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
+    }
+
+
+    public List<String> getRunDetail() {
+        return runDetail;
+    }
+
+    public void setRunDetail(List<String> runDetail) {
+        this.runDetail = runDetail;
     }
 }

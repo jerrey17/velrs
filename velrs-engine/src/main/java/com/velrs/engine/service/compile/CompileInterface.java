@@ -19,6 +19,7 @@ public interface CompileInterface {
 
     /**
      * 获取逻辑表达式
+     * 或且非（非不支持）
      *
      * @return
      */

@@ -1,8 +1,12 @@
 package com.velrs.engine.service.compile;
 
+import com.velrs.engine.constant.CompileConstant;
 import com.velrs.engine.exception.CompileException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +44,18 @@ public class CompileCondition implements CompileInterface {
 
     @Override
     public String getExp() {
-        return "\t\tboolean " + this.getName() + " = " + exps.stream().map(data -> data.getLogic() + data.getExp()).collect(Collectors.joining()) + ";\n";
+        StringBuffer sb = new StringBuffer();
+        exps.stream().forEach(data -> sb.append(data.getExp()));
+        sb.append("\t\t")
+                .append("boolean ")
+                .append(this.getName())
+                .append(" = ");
+        exps.stream().forEach(data ->
+                sb.append(data.getLogic())
+                        .append(" ")
+                        .append(CompileConstant.RESULT_NAME_PREFIX).append(data.getName()));
+        sb.append(";\n");
+        return sb.toString();
     }
 
     @Override
