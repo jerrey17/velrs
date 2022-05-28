@@ -56,7 +56,7 @@ public class RunController {
                 })
                 .map(model -> {
                     ResultInfo resultInfo = runCoreService.run(model);
-                    RunRespModel runRespModel = RunRespModel.responseSuccess(resultInfo.getResultMsg(), resultInfo.isPass());
+                    RunRespModel runRespModel = RunRespModel.responseSuccess(resultInfo.getResultMessages(), resultInfo.isPass());
                     log.info("{}-运行规则-成功-出参：{}", model.getIdentityId(), runRespModel);
                     return runRespModel;
                 })
@@ -80,7 +80,7 @@ public class RunController {
                 })
                 .map(model -> {
                     ResultInfo resultInfo = runTestService.run(model);
-                    RunRespModel runRespModel = RunRespModel.responseSuccess(resultInfo.getResultMsg(), resultInfo.isPass());
+                    RunRespModel runRespModel = RunRespModel.responseSuccess(resultInfo.getResultMessages(), resultInfo.isPass());
                     log.info("{}-TEST-成功-出参：{}", model.getIdentityId(), runRespModel);
                     return runRespModel;
                 })

@@ -24,7 +24,7 @@ public class ResultInfo {
      */
     private String resultMsg;
 
-    private List<String> runDetail = new ArrayList<>();
+    private List<String> resultMessages = new ArrayList<>();
 
     public boolean isPass() {
         return isPass;
@@ -42,12 +42,11 @@ public class ResultInfo {
         this.resultMsg = resultMsg;
     }
 
-
-    public List<String> getRunDetail() {
-        return runDetail;
+    public List<String> getResultMessages() {
+        return resultMessages;
     }
 
-    public void setRunDetail(List<String> runDetail) {
-        this.runDetail = runDetail;
+    public void addResultMessage(String resultMsg) {
+        resultMessages.add(resultMsg);
     }
 }

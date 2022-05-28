@@ -11,6 +11,8 @@ import java.util.Map;
 public class ${className} implements BaseRuleWorker {
     @Override
     public ResultInfo run(Map<String, String> vars) throws Exception {
+        ResultInfo resultInfo = new ResultInfo();
 ${ruleContent}
+        return resultInfo;
     }
 }

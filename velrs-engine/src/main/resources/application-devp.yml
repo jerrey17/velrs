@@ -12,9 +12,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/velrs?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/velrs?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: Root123123
     hikari:
       pool-name: velrs_engine_hikari_jdbc
       minimum-idle: 1
@@ -46,4 +46,4 @@ velrs:
     gc-step: 5
     max-call-fail-times: 6
     max-beat-times: 6
-    run-loader-level: db
+    run-loader-level: redis

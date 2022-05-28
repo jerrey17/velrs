@@ -39,13 +39,6 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         if (!Objects.equals(clazz.getSimpleName(), sourceBean.getClassType())) {
             throw new CompileException(String.format("Source ClassType Not Found [index:%s,%s]", conditionIndex, expIndex));
         }
-
-        /**
-         * TODO 改成这样的表达式 原来的是：NumberExp numberexp0_0 = new NumberExp(vars.get("invoiceAmount"));
-         * String var_source_0_0 = vars.get("invoiceAmount");
-         * NumberExp numberexp0_0 = new NumberExp(var_source_0_0);// 发票金额
-         */
-
         final StringBuffer sb = new StringBuffer();
         sb.append("\t\t")
                 .append("String ").append(CompileConstant.VAR_SOURCE_NAME_PREFIX).append(this.getName())
@@ -59,7 +52,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
                 .append(");\n");
 
         String expCode = sb.toString();
-        log.info(">> expObj[{}-{}]:{}", this.conditionIndex, this.expIndex, expCode);
+        log.debug(">> expObj[{}-{}]:{}", this.conditionIndex, this.expIndex, expCode);
         paramsMap.put(sourceBean.getCode(), sourceBean.getName()); // source是传值对象，需要作为参数条件传进来的。
         return expCode;
     }
@@ -82,12 +75,14 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         ConditionModel.ExpBean.SourceBean sourceBean = exp.getSource();
         List<ConditionModel.ExpBean.TargetBean> targetBeans = exp.getTarget();
 
+        /**
+         * validate method and param
+         */
         if (!Arrays.stream(clazz.getMethods())
                 .anyMatch(method -> Objects.equals(method.getName(), sourceBean.getMethod())
                         && method.getParameterCount() == sourceBean.getParamSize())) {
             throw new CompileException(String.format("Source Method Not Found [index:%s,%s]", conditionIndex, expIndex));
         }
-
         if (Objects.isNull(targetBeans)) {
             if (sourceBean.getParamSize() != 0) {
                 throw new CompileException(String.format("Target Size Not Equal Source Param Size [index:%s,%s]", conditionIndex, expIndex));
@@ -102,16 +97,8 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         }
 
         /**
-         * TODO 拆分成多个语句，原来拼装的是：boolean result0_0 = numberexp0_0.notEqual(vars.get("thirdInvoiceAmount"));
-         * String var_numberexp0_0 = vars.get("thirdInvoiceAmount");
-         * String var_numberexp0_1 = "夜总会";
-         * boolean result_numberexp0_0 = numberexp0_0.notEqual(var_target_0_0);
-         * boolean result_numberexp0_1 = stringexp0_1.contain(var_target_0_1);
-         *
-         * String textnumberexp_0_0 = String.format("发票金额(%s) notEqual 三方发票金额(%s) ==> 比对结果:%s", var_source_0_0, var_target_0_0, result0_0);
-         * String textnumberexp_0_1 = String.format("发票名称(%s) contain 固定值(%s) ==> 比对结果:%s", var_source_0_1, var_target_0_1, result0_1);
+         * compile the target code
          */
-
         final StringBuffer sb = new StringBuffer();
         final boolean haveParam = Objects.nonNull(sourceBean) && sourceBean.getParamSize() > 0;
         if (haveParam) {
@@ -145,7 +132,7 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
                 .append(".").append(sourceBean.getMethod())
                 .append("(");
         if (haveParam) {
-            // 有参数
+            // have param
             for (int i = 0; i < targetBeans.size(); i++) {
                 sb.append(CompileConstant.VAR_TARGET_NAME_PREFIX).append(i).append(this.getName());
                 if (i < targetBeans.size() - 1) {
@@ -153,21 +140,42 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
                 }
             }
         } else {
-            // 无参数 do nothing...  demo：booleanExp0_0.isTrue()
+            // not param, do nothing...  exp：booleanExp0_0.isTrue()
         }
         sb.append(");\n");
         String exp = sb.toString();
-        log.info(">> exp[{}-{}]:{}", this.conditionIndex, this.expIndex, exp);
+        log.debug(">> exp[{}-{}]:{}", this.conditionIndex, this.expIndex, exp);
 
-//        * String textnumberexp_0_0 = String.format("发票金额(%s) notEqual 三方发票金额(%s) ==> 比对结果:%s", var_source_0_0, var_target_0_0, result0_0);
-//        * String textnumberexp_0_1 = String.format("发票名称(%s) contain 固定值(%s) ==> 比对结果:%s", var_source_0_1, var_target_0_1, result0_1);
+        /**
+         * compile the rule text
+         */
         final StringBuffer textSb = new StringBuffer();
-        textSb.append("String ").append(CompileConstant.TEXT_NAME_PREFIX).append(this.getName())
-                .append(" = ")
-                .append("String.format(\"");
+        final StringBuffer targetVal = new StringBuffer();
+        textSb.append("\t\t").append("String ").append(CompileConstant.TEXT_NAME_PREFIX).append(this.getName())
+                .append(" = String.format(\"")
+                .append(sourceBean.getName())
+                .append("[").append(sourceBean.getCode()).append("]")
+                .append(":(%s)")
+                .append(sourceBean.getMethod())
+                .append("(");
+        if (haveParam) {
+            for (int i = 0; i < targetBeans.size(); i++) {
+                textSb.append("%s");
+                if(i != targetBeans.size() - 1) {
+                    textSb.append(", ");
+                }
+                targetVal.append(CompileConstant.VAR_TARGET_NAME_PREFIX).append(i).append(this.getName()).append(", ");
+            }
+        }
+        textSb.append(") ==> 比对结果:%s\", ")
+                .append(CompileConstant.VAR_SOURCE_NAME_PREFIX).append(this.getName()).append(", ")
+                .append(targetVal)
+                .append(CompileConstant.RESULT_NAME_PREFIX).append(this.getName()).append(");\n");
+        textSb.append("\t\t").append("resultInfo.addResultMessage(").append(CompileConstant.TEXT_NAME_PREFIX).append(this.getName()).append(");\n\n");
+        String text = textSb.toString();
 
-
-        return exp;
+        log.debug(">> exp-text[{}-{}]:{}", this.conditionIndex, this.expIndex, text);
+        return exp + text;
     }
 
     @Override

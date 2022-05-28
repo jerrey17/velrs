@@ -43,7 +43,7 @@ public class CompileHandler {
     private static final String K_FACT = "fact";
 
     @Autowired
-    Configuration config;
+    private Configuration config;
 
     /**
      * 编译执行
@@ -151,14 +151,7 @@ public class CompileHandler {
      * @return
      */
     private String getResultInfo(String resultExp) {
-        return new StringBuffer()
-                .append("\t\t")
-                .append("ResultInfo resultInfo = new ResultInfo();\n")
-                .append("\t\t")
-                .append("resultInfo.setPass(").append(resultExp).append(");\n")
-                .append("\t\t")
-                .append("return resultInfo;")
-                .toString();
+        return new StringBuffer().append("\t\t").append("resultInfo.setPass(").append(resultExp).append(");").toString();
     }
 
     /**
