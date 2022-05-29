@@ -22,8 +22,12 @@ public class ResultInfo {
     /**
      * 结果信息
      */
+    @Deprecated
     private String resultMsg;
 
+    /**
+     * 结果信息列表
+     */
     private List<String> resultMessages = new ArrayList<>();
 
     public boolean isPass() {

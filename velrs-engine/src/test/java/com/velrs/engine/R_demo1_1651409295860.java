@@ -3,7 +3,9 @@ package com.velrs.engine;
 import com.velrs.engine.model.ResultInfo;
 import com.velrs.engine.service.BaseRuleWorker;
 import com.velrs.engine.service.exp.*;
+
 import java.util.Map;
+
 /**
  * 可执行规则
  *
@@ -29,7 +31,7 @@ public class R_demo1_1651409295860 implements BaseRuleWorker {
         String _text_stringexp01 = String.format("发票名称[invoiceName]:(%s)contain(%s) ==> 比对结果:%s", _var_source_stringexp01, _var_target_0stringexp01, _result_stringexp01);
         resultInfo.addResultMessage(_text_stringexp01);
 
-        boolean result0 =  _result_numberexp00 &&  _result_stringexp01;
+        boolean result0 = _result_numberexp00 && _result_stringexp01;
         String _var_source_numberexp10 = vars.get("invoiceAmount");
         NumberExp _source_numberexp10 = new NumberExp(_var_source_numberexp10);
         String _var_source_dateexp11 = vars.get("invoiceDate");
@@ -45,7 +47,7 @@ public class R_demo1_1651409295860 implements BaseRuleWorker {
         String _text_dateexp11 = String.format("发票日期[invoiceDate]:(%s)innerRangeByDay(%s, %s) ==> 比对结果:%s", _var_source_dateexp11, _var_target_0dateexp11, _var_target_1dateexp11, _result_dateexp11);
         resultInfo.addResultMessage(_text_dateexp11);
 
-        boolean result1 =  _result_numberexp10 &&  _result_dateexp11;
+        boolean result1 = _result_numberexp10 && _result_dateexp11;
         resultInfo.setPass(result0 || result1);
 
         return resultInfo;
