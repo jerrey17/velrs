@@ -28,7 +28,7 @@ public class ResultInfo {
     /**
      * 结果信息列表
      */
-    private List<String> resultMessages = new ArrayList<>();
+    private List<ResultMessage> resultMessages = new ArrayList<>();
 
     public boolean isPass() {
         return isPass;
@@ -38,19 +38,20 @@ public class ResultInfo {
         isPass = pass;
     }
 
+    @Deprecated
     public String getResultMsg() {
         return resultMsg;
     }
-
+    @Deprecated
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
     }
 
-    public List<String> getResultMessages() {
+    public List<ResultMessage> getResultMessages() {
         return resultMessages;
     }
 
-    public void addResultMessage(String resultMsg) {
-        resultMessages.add(resultMsg);
+    public void addResultMessage(ResultMessage resultMessage) {
+        resultMessages.add(resultMessage);
     }
 }

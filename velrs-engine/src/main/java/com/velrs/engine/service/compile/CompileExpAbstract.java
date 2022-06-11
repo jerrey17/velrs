@@ -149,29 +149,30 @@ public abstract class CompileExpAbstract<T extends Class> implements CompileInte
         /**
          * compile the rule text
          */
+        final String textName = CompileConstant.TEXT_NAME_PREFIX + this.getName();
         final StringBuffer textSb = new StringBuffer();
+        textSb.append("\t\t").append("ResultMessage ").append(textName).append(" = new ResultMessage();\n")
+                .append("\t\t").append(textName).append(".setCode(\"").append(sourceBean.getCode()).append("\");\n")
+                .append("\t\t").append(textName).append(".setName(\"").append(sourceBean.getName()).append("\");\n");
         final StringBuffer targetVal = new StringBuffer();
-        textSb.append("\t\t").append("String ").append(CompileConstant.TEXT_NAME_PREFIX).append(this.getName())
-                .append(" = String.format(\"")
-                .append(sourceBean.getName())
-                .append("[").append(sourceBean.getCode()).append("]")
-                .append(":(%s)")
-                .append(sourceBean.getMethod())
-                .append("(");
+        final StringBuffer textExp = new StringBuffer();
+        textExp.append("String.format(\"(%s)").append(sourceBean.getMethod()).append("(");
         if (haveParam) {
             for (int i = 0; i < targetBeans.size(); i++) {
-                textSb.append("%s");
+                textExp.append("%s");
+                targetVal.append(CompileConstant.VAR_TARGET_NAME_PREFIX).append(i).append(this.getName());
                 if(i != targetBeans.size() - 1) {
-                    textSb.append(", ");
+                    textExp.append(", ");
+                    targetVal.append(", ");
                 }
-                targetVal.append(CompileConstant.VAR_TARGET_NAME_PREFIX).append(i).append(this.getName()).append(", ");
             }
         }
-        textSb.append(") ==> 比对结果:%s\", ")
+        textExp.append(")\", ")
                 .append(CompileConstant.VAR_SOURCE_NAME_PREFIX).append(this.getName()).append(", ")
-                .append(targetVal)
-                .append(CompileConstant.RESULT_NAME_PREFIX).append(this.getName()).append(");\n");
-        textSb.append("\t\t").append("resultInfo.addResultMessage(").append(CompileConstant.TEXT_NAME_PREFIX).append(this.getName()).append(");\n\n");
+                .append(targetVal).append(")");
+        textSb.append("\t\t").append(textName).append(".setExp(").append(textExp).append(");\n");
+        textSb.append("\t\t").append(textName).append(".setResult(").append(CompileConstant.RESULT_NAME_PREFIX).append(this.getName()).append(");\n");
+        textSb.append("\t\t").append("resultInfo.addResultMessage(").append(textName).append(");\n\n");
         String text = textSb.toString();
 
         log.debug(">> exp-text[{}-{}]:{}", this.conditionIndex, this.expIndex, text);
